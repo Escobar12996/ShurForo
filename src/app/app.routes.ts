@@ -5,11 +5,13 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForoComponent } from './components/foro/foro.component';
 import { UserdataComponent } from './components/userdata/userdata.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'foro', component: ForoComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'userdata', component: UserdataComponent },
 
 

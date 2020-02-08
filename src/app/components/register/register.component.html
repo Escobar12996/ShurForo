@@ -1,0 +1,71 @@
+<div class="container mt-3 p-3 fadeIn animated fast">
+    <div class="jumbotron">
+        <h1 class="display-4">Registro</h1>
+        <div *ngIf="!validado">
+            <form (ngSubmit)="primerEnvio(formulario)" #formulario="ngForm">
+
+
+                <div class="form-group">
+                    <label for="nombre">Usuario</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['usuario'].errors"> es requerido con un minimo de 4 letras</span>
+                    <span class="text-danger fadeIn animated" *ngIf="!validanombre"> usuario ya existe</span>
+                    <input type="text" required minlength="4" (blur)="buscaUser($event.target.value)" class="form-control" [(ngModel)]="usuario.usuario" name="usuario" placeholder="Usuario">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Email</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['email'].errors"> es requerido</span>
+                    <span class="text-danger fadeIn animated" *ngIf="!validaemail"> email ya existe</span>
+                    <input type="email" class="form-control" name="email" (blur)="buscaEmail($event.target.value)" [(ngModel)]="usuario.email" required email placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['pass'].errors"> es necesario mas de 8 caracteres</span>
+                    <input type="password" required minlength="8" class="form-control" [(ngModel)]="usuario.contrasena" name="pass" placeholder="Contraseña">
+                </div>
+                <button class="btn btn-primary" type="submit"> Enviar </button>
+            </form>
+        </div>
+
+        <div *ngIf="validado">
+            <form (ngSubmit)="segundoEnvio(formu)" #formu="ngForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formu.submitted && formu.controls['nombreapellido'].errors"> es necesario el nombre y los apellidos</span>
+                    <input type="text" class="form-control" name="nombreapellido" required minlength="10" [(ngModel)]="usuario.nombreappe" placeholder="Nombre y Apellidos">
+                </div>
+                <div class="form-check-inline">
+                    <label class="mr-1">Sexo:</label>
+                    <input class="form-check-input mr-1 ml-1" type="radio" name="sexo" required id="exampleRadios1" [(ngModel)]="usuario.sexo" value="hombre">
+                    <label class="mr-1 ml-1">Hombre</label>
+                    <input class="form-check-input ml-2" type="radio" name="sexo" required id="exampleRadios2" [(ngModel)]="usuario.sexo" value="mujer">
+                    <label>Mujer</label>
+                    <span class="text-danger fadeIn animated ml-1 pb-2" *ngIf="formu.submitted && formu.controls['sexo'].errors">Es necesario seleccionar alguno</span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Pais</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formu.submitted && formu.controls['pais'].errors"> es necesario seleccionar un pais</span>
+                    <select class="form-control" required [(ngModel)]="usuario.pais" name="pais">
+                  <option value="España" selected>España</option>
+                  <option value="Alemania">Alemania</option>
+                  <option value="Francia">Francia</option>
+                  <option value="Italia">Italia</option>
+                  <option value="Inglaterra">Inglaterra</option>
+                </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Aficiones</label>
+                    <div class="row">
+                        <div *ngFor="let value of mArray" class="col-6">
+                            <input type="checkbox" class="mr-1" name="aficiones" (change)="onCheckChange(value)" value="{{value}}"><label>{{value}}</label>
+                        </div>
+                    </div>
+                    <button type="submit " class="btn btn-primary mt-2 ">Enviar</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+</div>
