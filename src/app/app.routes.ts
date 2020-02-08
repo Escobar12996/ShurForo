@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ForoComponent } from './components/foro/foro.component';
 import { UserdataComponent } from './components/userdata/userdata.component';
 import { RegisterComponent } from './components/register/register.component';
+import { TemasComponent } from './components/temas/temas.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -13,7 +14,7 @@ const APP_ROUTES: Routes = [
   { path: 'foro', component: ForoComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'userdata', component: UserdataComponent },
-
+  { path: 'temas/:tema', component: TemasComponent },
 
 
   //poner encima de este

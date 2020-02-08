@@ -22,6 +22,7 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ZonaforoComponent } from './components/zonaforo/zonaforo.component';
+import { TemasComponent } from './components/temas/temas.component';
 
 
 
@@ -36,6 +37,7 @@ import { ZonaforoComponent } from './components/zonaforo/zonaforo.component';
     FooterComponent,
     RegisterComponent,
     ZonaforoComponent,
+    TemasComponent,
   ],
   imports: [
     BrowserModule,

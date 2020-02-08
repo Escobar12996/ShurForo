@@ -1,4 +1,4 @@
-<a href="#" *ngFor="let seccion of secciones">
+<a *ngFor="let seccion of secciones" [routerLink]="['/temas', 'seccion.nombre']">
     <div class="misbordesinternos row p-1 mb-1">
         <div class="col-8">
             {{seccion.nombre}}
