@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UserModel } from '../../models/user';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { LocalstorageService } from '../../service/localstorage.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   private valido = true;
 
 
-  constructor(public _fc: FirebaseForoService, private router: Router) {
+  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) {
   }
   
   ngOnInit() {
@@ -24,7 +25,6 @@ export class LoginComponent implements OnInit {
       this.usuario = new UserModel();
     }else{
       this.router.navigate(['/home']);
-      
     }
   }
 
@@ -44,8 +44,9 @@ export class LoginComponent implements OnInit {
           ususac['aficiones']
           );
           this.valido = true;
-          localStorage.setItem('usuario', JSON.stringify(user));
+          this.globalService.usuario = JSON.stringify(user); // this change will broadcast to every subscriber like below component
           this.router.navigate(['/home']);
+
       } else {
         this.valido = false;
       }

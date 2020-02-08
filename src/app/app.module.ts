@@ -24,6 +24,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ZonaforoComponent } from './components/zonaforo/zonaforo.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
