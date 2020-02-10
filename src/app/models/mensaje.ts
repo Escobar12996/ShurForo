@@ -1,59 +1,58 @@
 export class Mensaje{
 
-  private tema: string;
+  private id_tema: number;
   private mensaje: string;
-  private usuario: string;
-  private grupo: string;
-  private seccion: string;
+  private id_usuario: number;
+  private id_grupo: number;
+  private id_seccion: number;
   private id: number;
-  
-  constructor(tema: string = '', mensaje: string = '', usuario: string = '', grupo: string = '', seccion: string = '', id: number = 0){
-    this.tema = tema;
+
+  constructor(tema: number, mensaje: string, usuario: number, grupo: number, seccion: number, id: number = 0){
+    this.id_tema = tema;
     this.mensaje = mensaje;
-    this.usuario = usuario;
-    this.grupo = grupo;
-    this.seccion = seccion;
+    this.id_usuario = usuario;
+    this.id_grupo = grupo;
+    this.id_seccion = seccion;
     this.id = id;
   }
 
   public toObject() {
     return {
-      tema: this.tema,
+      tema: this.id_tema,
       mensaje: this.mensaje,
-      usuario: this.usuario,
-      grupo: this.grupo,
-      seccion: this.seccion,
+      usuario: this.id_usuario,
+      grupo: this.id_grupo,
+      seccion: this.id_seccion,
       id: this.id
     };
   }
-  
-  public setTema(tema: string){
-    this.tema = tema;
+
+  public setTema(tema: number){
+    this.id_tema = tema;
   }
 
   public setMensaje(mensaje: string){
     this.mensaje = mensaje;
   }
 
-  public setUsuario(usuario: string){
-    this.usuario = usuario;
+  public setUsuario(usuario: number){
+    this.id_usuario = usuario;
   }
 
-  public setGrupo(grupo: string){
-    this.grupo = grupo;
+  public setGrupo(grupo: number){
+    this.id_grupo = grupo;
   }
 
-  public setSeccion(seccion: string){
-    this.seccion = seccion;
+  public setSeccion(seccion: number){
+    this.id_seccion = seccion;
   }
 
   public setId(id: number){
     this.id = id;
   }
 
-  
   public getTema(){
-    return this.tema;
+    return this.id_tema;
   }
 
   public getMensaje(){
@@ -61,15 +60,15 @@ export class Mensaje{
   }
 
   public getUsuario(){
-    return this.usuario;
+    return this.id_usuario;
   }
 
   public getGrupo(){
-    return this.grupo;
+    return this.id_grupo;
   }
 
   public getSeccion(){
-    return this.seccion;
+    return this.id_seccion;
   }
 
   public getId(){

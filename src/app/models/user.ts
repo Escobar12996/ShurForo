@@ -1,6 +1,7 @@
 
 export class User {
 
+  private id: number;
   private usuario: string;
   private email: string;
   private contrasena: string;
@@ -9,7 +10,8 @@ export class User {
   private pais: string;
   private aficiones: Array<string> = [];
 
-  constructor(usuario = "", email = '', contrasena = "", nombreappe = "", sexo = "", pais = "", aficiones = []){
+  constructor(id: number = 0, usuario = "", email = '', contrasena = "", nombreappe = "", sexo = "", pais = "", aficiones = []){
+    this.id = id;
     this.usuario = usuario;
     this.email = email;
     this.contrasena = contrasena;
@@ -20,7 +22,21 @@ export class User {
   }
   public toObject() {
     return {
+      id: this.id,
       usuario: this.usuario,
+      email: this.email,
+      nombreappe: this.nombreappe,
+      sexo: this.sexo,
+      pais: this.pais,
+      aficiones: this.aficiones,
+    };
+  }
+
+  public toRegister() {
+    return {
+      id: this.id,
+      usuario: this.usuario,
+      contrasena: this.contrasena,
       email: this.email,
       nombreappe: this.nombreappe,
       sexo: this.sexo,
@@ -53,6 +69,9 @@ export class User {
     console.log(this.aficiones);
   }
 
+  public setId(id: number){
+    this.id = id;
+  }
   public setUsuario(usuario: string){
     this.usuario = usuario;
   }
@@ -81,6 +100,10 @@ export class User {
     this.aficiones = aficion;
   }
 
+  public getId(){
+    return this.id;
+  }
+  
   public getUsuario(){
     return this.usuario;
   }

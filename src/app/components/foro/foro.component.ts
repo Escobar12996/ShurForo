@@ -13,12 +13,10 @@ export class ForoComponent implements OnInit {
     this.grupos = [];
     this._fc.getGrupos().subscribe(data => {
       data.forEach(e => {
-        this.grupos.push(new Grupo(e['nombre']));
+        this.grupos.push(new Grupo(e['nombre'], e['id_grupo']));
       });
     }
-
     );
-
   }
 
 

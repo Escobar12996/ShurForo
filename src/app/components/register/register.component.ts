@@ -3,6 +3,8 @@ import { User } from '../../models/user';
 import { NgForm } from '@angular/forms';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 import { from } from 'rxjs';
+import { Router } from '@angular/router';
+import { LocalstorageService } from '../../service/localstorage.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +19,7 @@ export class RegisterComponent implements OnInit {
 
   public mArray:String[] = ["Videojuegos","Lectura","Netflix","Deporte","Motociclismo","Gastronomia"];
 
-  constructor(public _fc: FirebaseForoService) { }
+  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) { }
 
   ngOnInit() {
     this.usuario = new User();
@@ -35,12 +37,20 @@ export class RegisterComponent implements OnInit {
 
   segundoEnvio( form: NgForm ){
     
+    let lastid = 0;
+
     if (!form.invalid){
-        this._fc.saveUser(this.usuario);
-        this.usuario = new User();
-        this.validado = false;
-        this.validanombre = true;
-        this.validaemail = true;
+
+      this._fc.getUserlastid().subscribe(data=>{
+        lastid = data.length;
+      });
+
+      this.usuario.setId(lastid);
+      this._fc.saveUser(this.usuario);
+
+      this.globalService.usuario = JSON.stringify(this.usuario.toObject());
+      this.router.navigate(['/home']);
+      
     }
   }
 
@@ -49,7 +59,7 @@ export class RegisterComponent implements OnInit {
   }
 
   buscaUser(value: string){
-    this._fc.getUsuarios().subscribe(data=>{
+    this._fc.getUsuarioNombre(value).subscribe(data=>{
       if (data.find(element => element.usuario === value) !== undefined){
           this.validanombre = false;
           return null;
@@ -59,7 +69,7 @@ export class RegisterComponent implements OnInit {
   }
 
   buscaEmail(value: string){
-    this._fc.getUsuarios().subscribe(data=>{
+    this._fc.getUsuarioEmail(value).subscribe(data=>{
       if (data.find(element => element.email === value) !== undefined){
           this.validaemail = false;
           return null;

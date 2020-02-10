@@ -1,46 +1,55 @@
 export class Tema{
-  private creador: string;
-  private nombretema: string; 
-  private seccion: string;
-  private grupo: string;
+  private id_tema: number;
+  private id_creador: number;
+  private nombretema: string;
+  private id_seccion: number;
+  private id_grupo: number;
   private fecha: number;
 
 
-  constructor(creador: string, nombretema: string, seccion: string, grupo: string, fecha: number){
-    this.creador = creador;
+  constructor(id_tema: number, creador: number, nombretema: string, seccion: number, grupo: number, fecha: number){
+    this.id_tema = id_tema;
+    this.id_creador = creador;
     this.nombretema = nombretema; 
-    this.seccion = seccion;
-    this.grupo = grupo;
+    this.id_seccion = seccion;
+    this.id_grupo = grupo;
     this.fecha = fecha;
   }
 
-  public setCreador(creador: string){
-    this.creador = creador;
+  public setidtema(id_tema: number){
+    this.id_tema = id_tema;
+  }
+
+  public setCreador(creador: number){
+    this.id_creador = creador;
   }
   public setNombreTema(nombretema: string){
     this.nombretema = nombretema;
   }
-  public setSeccion(seccion: string){
-    this.seccion = seccion;
+  public setSeccion(seccion: number){
+    this.id_seccion = seccion;
   }
-  public setGrupo(grupo: string){
-    this.grupo = grupo;
+  public setGrupo(grupo: number){
+    this.id_grupo = grupo;
   }
   public setFecha(fecha: number){
     this.fecha = fecha;
   }
 
+  public getidtema(){
+    return this.id_tema;
+  }
   public getCreador(){
-    return this.creador;
+    return this.id_creador;
   }
   public getNombreTema(){
     return this.nombretema;
   }
   public getSeccion(){
-    return this.seccion;
+    return this.id_seccion;
   }
   public getGrupo(){
-    return this.grupo;
+    return this.id_grupo;
   }
   public getFecha(){
     return this.fecha;

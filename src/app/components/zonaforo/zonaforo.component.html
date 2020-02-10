@@ -1,6 +1,6 @@
 <div *ngFor="let seccion of secciones">
-    <a [routerLink]="['/temas', seccion.nombre, seccion.grupo]">
-        <div class="misbordesinternos row p-1 mb-1">
+    <button (click)="navegar(seccion.id_grupo, seccion.id_seccion)" class="btn btn-outline-primary btn-block">
+        <div class="row p-1 mb-1 text-left">
             <div class="col-8">
                 {{seccion.nombre}}
             </div>
@@ -8,5 +8,5 @@
                 Temas: 3
             </div>
         </div>
-    </a>
+    </button>
 </div>

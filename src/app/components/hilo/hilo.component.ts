@@ -4,6 +4,7 @@ import { FirebaseForoService } from '../../service/firebaseforo.service';
 import { Mensaje } from '../../models/mensaje';
 import { NgForm } from '@angular/forms';
 import { storage } from 'firebase';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-hilo',
@@ -11,24 +12,33 @@ import { storage } from 'firebase';
 })
 export class HiloComponent implements OnInit {
 
-  private tema: string;
-  private seccion: string;
-  private grupo: string;
+  private tema: number;
+  private seccion: number;
+  private grupo: number;
   private mensaje: Mensaje;
   private valido: boolean = false;
   private usuarioexiste: boolean = false;
   private ultimoid: number = 0;
 
   public mensajes: Array<Mensaje>;
+  public usuarios: Array<User>;
 
-  constructor(private rutaActiva: ActivatedRoute, public _fc: FirebaseForoService, private router: Router) {
-    this.mensaje = new Mensaje();
-    this.tema = this.rutaActiva.snapshot.params.tema;
-    this.seccion = this.rutaActiva.snapshot.params.seccion;
-    this.grupo = this.rutaActiva.snapshot.params.grupo;
-   }
+
+  constructor(public _fc: FirebaseForoService, private router: Router) {}
 
   ngOnInit() {
+    this._fc.getUsuarios().subscribe(data=>{
+      this.usuarios = [];
+      data.forEach(e => {
+        this.usuarios.push(new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones']));
+      });
+    });
+
+    this.tema = parseInt(sessionStorage.getItem('tema'));
+    this.seccion = parseInt(sessionStorage.getItem('seccion'));
+    this.grupo = parseInt(sessionStorage.getItem('grupo'));
+
+    this.mensaje = new Mensaje(this.tema, '', 0, this.grupo,this.seccion, this.ultimoid);
 
     if(JSON.parse(sessionStorage.getItem('usuario')) !== null){
       this.usuarioexiste = true;
@@ -46,21 +56,29 @@ export class HiloComponent implements OnInit {
     );
   }
 
+  
   enviar( form: NgForm ){
     
     if (!form.invalid && this.usuarioexiste){
-      this.mensaje.setTema(this.tema);
-      this.mensaje.setGrupo(this.grupo);
-      this.mensaje.setSeccion(this.seccion);
-      this.mensaje.setUsuario(JSON.parse(sessionStorage.getItem('usuario'))['usuario']);
       this.mensaje.setId(this.ultimoid+1);
       this._fc.saveMensaje(this.mensaje);
 
-      this.mensaje = new Mensaje();
+      this.mensaje = new Mensaje(this.tema, '', JSON.parse(sessionStorage.getItem('usuario'))['id'], this.grupo,this.seccion, this.ultimoid);
       this.valido = true;
     } else {
       this.valido = false;
     }
+  }
+
+  getusuario(id: number){
+
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].getId() === id){
+        return this.usuarios[i];
+      }
+
+    }
+
   }
 
 }

@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
 import { User } from '../models/user';
 import { Mensaje } from '../models/mensaje';
-import { Tema } from '../models/tema';
 
 @Injectable()
 export class FirebaseForoService {
@@ -21,30 +19,38 @@ export class FirebaseForoService {
     return this.items.valueChanges();
   }
 
+  findGrupo(grupoid: number){
+    this.items = this.fb.collection<any>('grupos', ref => ref.where('id_grupo', '==', grupoid));
+    return this.items.valueChanges();
+  }
+
 
 // zona de secciones
-  getSecciones( grupo: string){
-    this.items = this.fb.collection<any>('seccion', ref => ref.where('grupo', '==', grupo));
+  getSecciones( grupo: number){
+    this.items = this.fb.collection<any>('seccion', ref => ref.where('id_grupo', '==', grupo));
     return this.items.valueChanges();
   }
 
 
 // zona de los temas
-  getTemas( seccion: string, grupo: string){
-    this.items = this.fb.collection<any>('tema', ref => ref.where('seccion', '==', seccion).where('grupo', '==', grupo));
-    return this.items.valueChanges();
-  }
+getTemas( grupo: number, seccion: number){
+
+  this.items = this.fb.collection<any>('tema',
+                ref => ref.where('id_grupo', '==', grupo)
+                .where('id_seccion', '==', seccion));
+  return this.items.valueChanges();
+}
 
 
 // zona de mensajes
-  getMensajes( tema: string, seccion: string, grupo: string){
+  getMensajes( tema: number, seccion: number, grupo: number){
     this.items = this.fb.collection<any>('mensajes', ref => ref.where('tema', '==', tema).orderBy('id'));
     return this.items.valueChanges();
   }
 
   saveMensaje( mensaje: Mensaje){
     return this.fb.collection('mensajes')
-            .doc(mensaje.getGrupo()+mensaje.getId()+mensaje.getSeccion()+mensaje.getTema()+mensaje.getUsuario())
+            .doc(""+mensaje.getGrupo()+mensaje.getId()+mensaje.getSeccion()+mensaje.getTema()+mensaje.getUsuario())
             .set(mensaje.toObject());
   }
 
@@ -54,8 +60,28 @@ export class FirebaseForoService {
     return this.items.valueChanges();
   }
 
+  getUserlastid(){
+    this.items = this.fb.collection<any>('mensajes', ref => ref.orderBy('id'));
+    return this.items.valueChanges();
+  }
+
+  getUsuarioId(id: number){
+    this.items = this.fb.collection<any>('usuarios', ref => ref.where('id', '==', id));
+    return this.items.valueChanges();
+  }
+
+  getUsuarioEmail(correo: string){
+    this.items = this.fb.collection<any>('usuarios', ref => ref.where('email', '==', correo));
+    return this.items.valueChanges();
+  }
+
+  getUsuarioNombre(nombre: string){
+    this.items = this.fb.collection<any>('usuarios', ref => ref.where('usuario', '==', nombre));
+    return this.items.valueChanges();
+  }
+
   saveUser( user: User){
-    return this.fb.collection('usuarios').doc(user.getUsuario()).set(user.toObject());
+    return this.fb.collection('usuarios').doc(""+user.getId()).set(user.toRegister());
   }
 
 }

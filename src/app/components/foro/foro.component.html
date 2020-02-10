@@ -5,7 +5,7 @@
         <div class="p-4" *ngFor="let value of grupos">
             <h5 class="text-success">{{value.nombre}}</h5>
             <hr class="bg-dark">
-            <app-zonaforo [grupo]="value.nombre"></app-zonaforo>
+            <app-zonaforo [grupoid]="value.id_grupo"></app-zonaforo>
         </div>
     </div>
 </div>

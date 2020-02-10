@@ -16,8 +16,8 @@ const APP_ROUTES: Routes = [
   { path: 'userdata', component: UserdataComponent },
 
   { path: 'foro', component: ForoComponent },
-  { path: 'temas/:seccion/:grupo', component: TemasComponent },
-  { path: 'hilo/:tema/:seccion/:grupo', component: HiloComponent },
+  { path: 'tema', component: TemasComponent },
+  { path: 'hilo', component: HiloComponent },
 
   //poner encima de este
   { path: '**', pathMatch: 'full', redirectTo: 'home'}

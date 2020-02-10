@@ -1,8 +1,11 @@
 
 export class Grupo{
-  private nombre:string;
-  constructor(nombre:string){
-    this.nombre = nombre;
-  }
 
+  private id_grupo: number;
+  private nombre: string;
+
+  constructor(nombre: string, id_grupo: number){
+    this.nombre = nombre;
+    this.id_grupo = id_grupo;
+  }
 }

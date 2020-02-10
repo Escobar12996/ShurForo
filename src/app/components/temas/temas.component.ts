@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Tema } from '../../models/tema';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 
@@ -9,27 +9,35 @@ import { FirebaseForoService } from '../../service/firebaseforo.service';
 })
 export class TemasComponent implements OnInit {
 
-  public seccion: string;
-  public grupo: string;
+  public seccion: number;
+  public grupo: number;
   public temas: Array<Tema>;
 
-  constructor(private rutaActiva: ActivatedRoute, public _fc: FirebaseForoService ) { 
-    this.seccion = this.rutaActiva.snapshot.params.seccion;
-    this.grupo = this.rutaActiva.snapshot.params.grupo;
+  constructor( public fc: FirebaseForoService, private router: Router ) {
   }
 
   ngOnInit() {
-    this.temas = [];
 
-    this._fc.getTemas(this.seccion,this.grupo).subscribe(data => {
+    if (sessionStorage.getItem('grupo') === null || sessionStorage.getItem('grupo') === null){
+      this.router.navigate(['/foro']);
+    } else {
+      this.seccion = parseInt(sessionStorage.getItem('seccion'));
+      this.grupo = parseInt(sessionStorage.getItem('grupo'));
+    }
+    
+
+    this.fc.getTemas(this.seccion, this.grupo).subscribe(data => {
+      this.temas = [];
       data.forEach(e => {
-          this.temas.push(new Tema( e['creador'], e['nombretema'], e['seccion'], e['grupo'], e['fecha']));
-          //console.log(new Tema( e['creador'], e['fecha'], e['nombretema'], e['seccion']));
+          this.temas.push(new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']));
       });
       }
     );
+  }
 
-
+  navegar(id_tema: number){
+    sessionStorage.setItem('tema', '' + id_tema);
+    this.router.navigate(['/hilo']);
   }
 
 }

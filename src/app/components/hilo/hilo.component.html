@@ -8,7 +8,7 @@
             <div *ngFor="let mensaje of mensajes">
                 <div class="misbordesinternos row p-3 mb-1">
                     <div class="col-4">
-                        {{mensaje.usuario}}
+                        {{ getusuario(mensaje.id_usuario).getUsuario() }}
                     </div>
                     <div class="col-8">
                         {{mensaje.mensaje}}
