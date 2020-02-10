@@ -23,6 +23,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ZonaforoComponent } from './components/zonaforo/zonaforo.component';
 import { TemasComponent } from './components/temas/temas.component';
+import { HiloComponent } from './components/hilo/hilo.component';
 
 
 
@@ -38,6 +39,7 @@ import { TemasComponent } from './components/temas/temas.component';
     RegisterComponent,
     ZonaforoComponent,
     TemasComponent,
+    HiloComponent,
   ],
   imports: [
     BrowserModule,

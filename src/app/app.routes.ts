@@ -7,17 +7,20 @@ import { ForoComponent } from './components/foro/foro.component';
 import { UserdataComponent } from './components/userdata/userdata.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TemasComponent } from './components/temas/temas.component';
+import { HiloComponent } from './components/hilo/hilo.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'foro', component: ForoComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'userdata', component: UserdataComponent },
-  { path: 'temas/:tema', component: TemasComponent },
 
+  { path: 'foro', component: ForoComponent },
+  { path: 'temas/:seccion/:grupo', component: TemasComponent },
+  { path: 'hilo/:tema/:seccion/:grupo', component: HiloComponent },
 
   //poner encima de este
   { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];
+
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

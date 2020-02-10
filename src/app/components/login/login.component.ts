@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 import { NgForm } from '@angular/forms';
-import { UserModel } from '../../models/user';
+import { User } from '../../models/user';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { LocalstorageService } from '../../service/localstorage.service';
@@ -12,7 +12,7 @@ import { LocalstorageService } from '../../service/localstorage.service';
 })
 export class LoginComponent implements OnInit {
 
-  private usuario: UserModel;
+  private usuario: User;
   private valido = true;
 
 
@@ -20,21 +20,24 @@ export class LoginComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.usuario = JSON.parse(localStorage.getItem('usuario'));
+    this.usuario = JSON.parse(sessionStorage.getItem('usuario'));
     if(this.usuario === null){
-      this.usuario = new UserModel();
+      this.usuario = new User();
     }else{
       this.router.navigate(['/home']);
     }
   }
 
   login(form: NgForm){
-    let user: UserModel;
+    let user: User;
 
     this._fc.getUsuarios().subscribe(data=>{
-      if (data.find(element => element.usuario === this.usuario.usuario && element.contrasena === this.usuario.contrasena) !== undefined){
-          let ususac = data.find(element => element.usuario === this.usuario.usuario && element.contrasena === this.usuario.contrasena);
-          user = new UserModel(
+      if (data.find(element => element.usuario === this.usuario.getUsuario() 
+        && element.contrasena === this.usuario.getContrasena()) !== undefined){
+
+          const ususac = data.find(element => element.usuario === this.usuario.getUsuario()
+            && element.contrasena === this.usuario.getContrasena());
+          user = new User(
           ususac['usuario'],
           ususac['email'],
           ususac['contrasena'],
@@ -44,7 +47,7 @@ export class LoginComponent implements OnInit {
           ususac['aficiones']
           );
           this.valido = true;
-          this.globalService.usuario = JSON.stringify(user); // this change will broadcast to every subscriber like below component
+          this.globalService.usuario = JSON.stringify(user.toObject());
           this.router.navigate(['/home']);
 
       } else {

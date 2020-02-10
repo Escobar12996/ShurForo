@@ -1,0 +1,32 @@
+<div class="container fadeIn animated fast mb-5 pb-5">
+    <div class="mt-5 p-4 micont bg-white">
+        <div class="p-4">
+            <h5 class="text-success">{{tema}}</h5>
+            <hr class="bg-dark">
+
+
+            <div *ngFor="let mensaje of mensajes">
+                <div class="misbordesinternos row p-3 mb-1">
+                    <div class="col-4">
+                        {{mensaje.usuario}}
+                    </div>
+                    <div class="col-8">
+                        {{mensaje.mensaje}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="misbordesinternos row p-3 mt-5">
+                <div class="col-12 text-center">Comentar</div>
+
+                <form class="col-12 mt-3 text-center" (ngSubmit)="enviar(formulario)" #formulario="ngForm">
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && !valido"> Mensaje no valido</span>
+                    <textarea class="form-control" required id="exampleFormControlTextarea1" [(ngModel)]="mensaje.mensaje" name="mensaje" rows="3"></textarea>
+                    <button type="submit" class="btn btn-outline-success mt-2" *ngIf="usuarioexiste">Enviar Comentario</button>
+                    <a class="nav-link" *ngIf="!usuarioexiste" class="btn btn-outline-success mt-2" [routerLink]="[ '/login']">Login</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

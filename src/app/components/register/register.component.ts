@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../../models/user';
+import { User } from '../../models/user';
 import { NgForm } from '@angular/forms';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 import { from } from 'rxjs';
@@ -11,7 +11,7 @@ import { from } from 'rxjs';
 export class RegisterComponent implements OnInit {
 
   validado = false;
-  usuario: UserModel;
+  usuario: User;
   validanombre = true;
   validaemail = true;
 
@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   constructor(public _fc: FirebaseForoService) { }
 
   ngOnInit() {
-    this.usuario = new UserModel();
+    this.usuario = new User();
   }
   
   validate(){
@@ -37,32 +37,15 @@ export class RegisterComponent implements OnInit {
     
     if (!form.invalid){
         this._fc.saveUser(this.usuario);
-        this.usuario = new UserModel();
+        this.usuario = new User();
         this.validado = false;
+        this.validanombre = true;
+        this.validaemail = true;
     }
   }
 
-  onCheckChange(pass) {
-    let booleano = false;
-    let poss = 0;
-
-    if (this.usuario.aficiones != undefined){
-      for (let i = 0; i < this.usuario.aficiones.length; i++){
-        if (this.usuario.aficiones[i] === pass){
-          booleano = true;
-          poss = i;
-        }
-      }
-      if (booleano === true){
-        this.usuario.aficiones.splice(poss, 1);
-      } else if (this.usuario.aficiones != undefined){
-        this.usuario.aficiones[this.usuario.aficiones.length] = pass;
-      }
-    } else {
-      this.usuario.aficiones = [];
-      this.usuario.aficiones[0] = pass;
-    }
-    console.log(this.usuario.aficiones);
+  onCheckChange(pass: string) {
+    this.usuario.changeAficiones(pass);
   }
 
   buscaUser(value: string){

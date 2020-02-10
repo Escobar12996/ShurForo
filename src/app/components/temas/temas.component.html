@@ -1,1 +1,22 @@
+<div class="container fadeIn animated fast mb-5 pb-5">
+    <div class="mt-5 p-4 micont bg-white">
+        <div class="p-4">
+            <h5 class="text-success">{{seccion}}</h5>
+            <hr class="bg-dark">
 
+
+            <div *ngFor="let tema of temas">
+                <a [routerLink]="['/hilo', tema.nombretema, tema.seccion, tema.grupo]">
+                    <div class="misbordesinternos row p-1 mb-1">
+                        <div class="col-8">
+                            {{tema.nombretema}}
+                        </div>
+                        <div class="col-4 text-right">
+                            Temas: 3
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,11 +12,11 @@ export class LocalstorageService {
 
   set usuario(value) {
     this.itemValue.next(value); // this will make sure to tell every subscriber about the change.
-    localStorage.setItem('usuario', value);
+    sessionStorage.setItem('usuario', value);
   }
  
   get usuario() {
-    return localStorage.getItem('usuario');
+    return sessionStorage.getItem('usuario');
   }
 
 }

@@ -16,6 +16,7 @@ export class ZonaforoComponent implements OnInit {
     this.secciones = [];
 
     this._fc.getSecciones(this.grupo).subscribe(data => {
+        
         data.forEach(e => {
           this.secciones.push(new Seccion(e['grupo'], e['nombre']));
         });
