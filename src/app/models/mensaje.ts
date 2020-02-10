@@ -7,7 +7,7 @@ export class Mensaje{
   private id_seccion: number;
   private id: number;
 
-  constructor(tema: number, mensaje: string, usuario: number, grupo: number, seccion: number, id: number = 0){
+  constructor(tema: number = 0, mensaje: string = '', usuario: number = 0, grupo: number = 0, seccion: number = 0, id: number = 0){
     this.id_tema = tema;
     this.mensaje = mensaje;
     this.id_usuario = usuario;

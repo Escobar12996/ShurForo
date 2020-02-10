@@ -14,10 +14,6 @@ export class ZonaforoComponent implements OnInit {
   constructor( public _fc: FirebaseForoService, private router: Router ) {}
 
   ngOnInit() {
-    sessionStorage.setItem('grupo', null);
-    sessionStorage.setItem('seccion', null);
-    sessionStorage.setItem('tema', null);
-
     this._fc.getSecciones(this.grupoid).subscribe(data => {
       this.secciones = [];
 
@@ -25,13 +21,5 @@ export class ZonaforoComponent implements OnInit {
         this.secciones.push(new Seccion(e['id_seccion'], e['id_grupo'], e['nombre']));
       });
     });
-
   }
-
-  navegar(id_grupobus: number, id_seccion: number){
-    sessionStorage.setItem('grupo', '' + id_grupobus);
-    sessionStorage.setItem('seccion', '' + id_seccion);
-    this.router.navigate(['/tema']);
-  }
-
 }

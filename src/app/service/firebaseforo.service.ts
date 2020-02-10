@@ -33,13 +33,21 @@ export class FirebaseForoService {
 
 
 // zona de los temas
-getTemas( grupo: number, seccion: number){
+  getTemas( grupo: number, seccion: number){
 
-  this.items = this.fb.collection<any>('tema',
-                ref => ref.where('id_grupo', '==', grupo)
-                .where('id_seccion', '==', seccion));
-  return this.items.valueChanges();
-}
+    this.items = this.fb.collection<any>('tema',
+                  ref => ref.where('id_grupo', '==', grupo)
+                  .where('id_seccion', '==', seccion));
+    return this.items.valueChanges();
+  }
+
+  getThisTema(grupo: number, seccion: number, nombre: string){
+    this.items = this.fb.collection<any>('tema',
+                  ref => ref.where('id_grupo', '==', grupo)
+                  .where('id_seccion', '==', seccion)
+                  .where('nombretema', '==', nombre));
+    return this.items.valueChanges();
+  }
 
 
 // zona de mensajes

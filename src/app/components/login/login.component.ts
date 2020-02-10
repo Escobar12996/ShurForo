@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
           const ususac = data.find(element => element.usuario === this.usuario.getUsuario()
             && element.contrasena === this.usuario.getContrasena());
           user = new User(
+          ususac['id'],
           ususac['usuario'],
           ususac['email'],
           ususac['contrasena'],

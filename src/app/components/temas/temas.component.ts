@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Tema } from '../../models/tema';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 
@@ -13,18 +13,12 @@ export class TemasComponent implements OnInit {
   public grupo: number;
   public temas: Array<Tema>;
 
-  constructor( public fc: FirebaseForoService, private router: Router ) {
+  constructor( public fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute ) {
   }
 
   ngOnInit() {
-
-    if (sessionStorage.getItem('grupo') === null || sessionStorage.getItem('grupo') === null){
-      this.router.navigate(['/foro']);
-    } else {
-      this.seccion = parseInt(sessionStorage.getItem('seccion'));
-      this.grupo = parseInt(sessionStorage.getItem('grupo'));
-    }
-    
+    this.grupo = parseInt(this.ruta.snapshot.params.id_grupo);
+    this.seccion = parseInt(this.ruta.snapshot.params.id_seccion);
 
     this.fc.getTemas(this.seccion, this.grupo).subscribe(data => {
       this.temas = [];
@@ -34,10 +28,4 @@ export class TemasComponent implements OnInit {
       }
     );
   }
-
-  navegar(id_tema: number){
-    sessionStorage.setItem('tema', '' + id_tema);
-    this.router.navigate(['/hilo']);
-  }
-
 }
