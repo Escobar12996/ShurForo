@@ -12,6 +12,7 @@ import { LocalstorageService } from '../../service/localstorage.service';
 })
 export class RegisterComponent implements OnInit {
 
+  unavuelta = true;
   validado = false;
   usuario: User;
   validanombre = true;
@@ -19,10 +20,11 @@ export class RegisterComponent implements OnInit {
 
   public mArray:String[] = ["Videojuegos","Lectura","Netflix","Deporte","Motociclismo","Gastronomia"];
 
-  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) { }
+  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) {
+    this.usuario = new User();
+   }
 
   ngOnInit() {
-    this.usuario = new User();
   }
   
   validate(){
@@ -36,21 +38,24 @@ export class RegisterComponent implements OnInit {
   }
 
   segundoEnvio( form: NgForm ){
-    
-    let lastid = 0;
 
     if (!form.invalid){
 
       this._fc.getUserlastid().subscribe(data=>{
-        lastid = data.length;
+        if (this.unavuelta === true){
+          this.usuario.setId(data.length);
+
+          console.log(this.usuario.getId());
+          this._fc.saveUser(this.usuario);
+  
+          this.globalService.usuario = JSON.stringify(this.usuario.toObject());
+          this.router.navigate(['/home']);
+          
+          this.unavuelta = false;
+          return false;
+        }
+       
       });
-
-      this.usuario.setId(lastid);
-      this._fc.saveUser(this.usuario);
-
-      this.globalService.usuario = JSON.stringify(this.usuario.toObject());
-      this.router.navigate(['/home']);
-      
     }
   }
 

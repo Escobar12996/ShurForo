@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tema } from '../../models/tema';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-temas',
@@ -12,6 +13,7 @@ export class TemasComponent implements OnInit {
   public seccion: number;
   public grupo: number;
   public temas: Array<Tema>;
+  public editor = ClassicEditor;
 
   constructor( public fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute ) {
   }

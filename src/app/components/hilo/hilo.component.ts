@@ -5,6 +5,8 @@ import { Mensaje } from '../../models/mensaje';
 import { NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { Tema } from '../../models/tema';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 @Component({
   selector: 'app-hilo',
@@ -12,99 +14,125 @@ import { Tema } from '../../models/tema';
 })
 export class HiloComponent implements OnInit {
 
+  // necesario para la carga
   private temaNombre: string;
   private seccion: number;
   private grupo: number;
-  private usuarioexiste = true;
-  private ultimoid = 0;
-  private valido = true;
-
-  private tema: Tema = new Tema(0,0,'carganado',0,0,0);
+  private usuarioexiste = false;
   public mensajes: Array<Mensaje>;
   public usuarios: Array<User>;
+
+  // editor
+  public editor = ClassicEditor;
+
+  // formulario
+  private ultimoid = 0;
+  private valido = true;
   private mensaje: Mensaje = new Mensaje();
 
-  constructor(public _fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute) {
-    this._fc.getUsuarios().subscribe(data=>{
+  // tema a mostrar
+  private tema: Tema = new Tema(0,0,'cargando',0,0,0);
+
+
+
+  constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute) {
+
+    // cambia la bandera para mostrar el wisiwi ese o el login
+    if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
+      this.usuarioexiste = true;
+    }
+
+    // obtiene todos los usuarios para almacenarlos en el array
+    this.fc.getUsuarios().subscribe(data => {
       this.usuarios = [];
       data.forEach(e => {
         this.usuarios.push(new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones']));
       });
     });
 
-    this.grupo = parseInt(this.ruta.snapshot.params.id_grupo);
-    this.seccion = parseInt(this.ruta.snapshot.params.id_seccion);
+    // obtenemos que tema cargar con estos parametros
+    this.grupo = parseInt( this.ruta.snapshot.params.id_grupo );
+    this.seccion = parseInt( this.ruta.snapshot.params.id_seccion );
     this.temaNombre = this.ruta.snapshot.params.nombredelhilo;
 
-    
-    if(JSON.parse(sessionStorage.getItem('usuario')) !== null){
-      this.usuarioexiste = true;
-    }
-    
-    this._fc.getThisTema(this.grupo, this.seccion, this.temaNombre).subscribe(data => {
+    // buscamos y cargamos el tema, dentro de este cargamos los mensajes etc
+    this.fc.getThisTema(this.grupo, this.seccion, this.temaNombre).subscribe(data => {
 
-      data.forEach(e => {
+      // si hay datos en el array
+      if (data.length > 0) {
+        // recorremos el array
+        data.forEach(e => {
 
-        if (e['nombretema'] == this.temaNombre && e['id_grupo'] == this.grupo && e['id_seccion'] == this.seccion){
-          this.tema = new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']);
-          this.mensaje = new Mensaje(this.tema.getidtema(), '', 0, this.grupo,this.seccion, this.ultimoid);
+          // si de verdad existe el tema en el array
+          if (e['nombretema'] === this.temaNombre && e['id_grupo'] === this.grupo && e['id_seccion'] === this.seccion) {
 
-          this._fc.getMensajes(this.tema.getidtema(), this.seccion, this.grupo).subscribe(data => {
-            this.mensajes = [];
-            data.forEach(e => {
-                this.mensajes.push(new Mensaje( e['tema'], e['mensaje'], e['usuario'], e['grupo'], e['seccion'], e['id']));
-                if (this.ultimoid < e['id']){
-                  this.ultimoid = e['id'];
-                }
-            });
-            }
-          );
-        }
-      });
+            // cargamos el tema en el objeto de tema
+            this.tema = new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']);
+
+            // actualizo el mensaje
+            this.mensaje = new Mensaje(this.tema.getidtema(), '', 0, this.grupo,this.seccion, this.ultimoid);
+
+            // recorro los mensajes para cargarlos
+            this.fc.getMensajes(this.tema.getidtema(), this.seccion, this.grupo).subscribe(dato => {
+
+              // borro el array de los mensajes para que borre los anteriores
+              this.mensajes = [];
+
+              // recorro los mensajes y los guardo
+              dato.forEach(f => {
+
+                  // los guardo en memoria
+                  this.mensajes.push(new Mensaje( f['tema'], f['mensaje'], f['usuario'], f['grupo'], f['seccion'], f['id']));
+
+                  // si este id, es mayor que el que tengo, lo guardo
+                  if (this.ultimoid < f['id']){
+                    this.ultimoid = f['id'];
+                  }
+              });
+              }
+            );
+          }
+        });
+      }
       }
     );
   }
 
-  ngOnInit() {
-    
+  ngOnInit() {}
 
+  // boton de enviar nuevo mensaje
+  enviar( form: NgForm ) {
 
-    
-  }
+    // controlo que el formulario sea valido y que el usuario exista
+    if (!form.invalid && this.usuarioexiste) {
 
-  
-  enviar( form: NgForm ){
-    
-    if (!form.invalid && this.usuarioexiste){
-      this.mensaje.setId(this.ultimoid+1);
-      this._fc.saveMensaje(this.mensaje);
+      // le agrego el id
+      this.mensaje.setId(this.ultimoid + 1);
+      // aumento el ultimo id
+      this.ultimoid++;
+      // almaceno el mensaje
+      this.fc.saveMensaje(this.mensaje);
 
+      // creo un nuevo mensaje
       this.mensaje = new Mensaje(this.tema.getidtema(), '',
                                   JSON.parse(sessionStorage.getItem('usuario'))['id'],
                                   this.grupo,this.seccion,
                                   this.ultimoid);
+      // pongo el valido a true
       this.valido = true;
+
+    // en este caso el mensaje no se a podido mandar
     } else {
       this.valido = false;
     }
   }
 
+  // devuelve el id del usuario
   getusuario(id: number){
-
-    // this._fc.getUsuarioId(id).subscribe(data=>{
-    //   this.usuarios = [];
-    //   data.forEach(e => {
-    //     return new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones']);
-    //   });
-    // });
-
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].getId() === id){
-        return this.usuarios[i];
+      for (let i = 0; i < this.usuarios.length; i++) {
+        if (this.usuarios[i].getId() === id){
+          return this.usuarios[i];
+        }
       }
-
-    }
-
   }
-
 }

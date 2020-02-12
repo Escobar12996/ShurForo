@@ -5,6 +5,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +43,7 @@ import { HiloComponent } from './components/hilo/hilo.component';
     HiloComponent,
   ],
   imports: [
+    CKEditorModule,
     BrowserModule,
     APP_ROUTING,
     FormsModule,

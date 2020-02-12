@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   login(form: NgForm){
     let user: User;
 
-    this._fc.getUsuarios().subscribe(data=>{
+    this._fc.getUsertoLogin(this.usuario.getUsuario(), this.usuario.getContrasena()).subscribe(data=>{
       if (data.find(element => element.usuario === this.usuario.getUsuario() 
         && element.contrasena === this.usuario.getContrasena()) !== undefined){
 

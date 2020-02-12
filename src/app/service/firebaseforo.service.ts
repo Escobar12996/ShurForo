@@ -68,8 +68,13 @@ export class FirebaseForoService {
     return this.items.valueChanges();
   }
 
+  getUsertoLogin(usuario: string, password: string){
+    this.items = this.fb.collection<any>('usuarios', ref => ref.where('usuario', '==', usuario).where('contrasena', '==', password));
+    return this.items.valueChanges();
+  }
+
   getUserlastid(){
-    this.items = this.fb.collection<any>('mensajes', ref => ref.orderBy('id'));
+    this.items = this.fb.collection<any>('usuarios', ref => ref.orderBy('id'));
     return this.items.valueChanges();
   }
 

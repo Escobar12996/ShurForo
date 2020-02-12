@@ -4,11 +4,12 @@ body {
     background: #DBE1E7;
 }
 
-.misbordesinternos {
-    border: 1px solid rgb(167, 247, 174);
-    -webkit-border-radius: 1px;
-    -moz-border-radius: 1px;
-    border-radius: 1px;
+.tamano {
+    min-height: 300px;
+}
+
+.gris {
+    background: #BDBDBD;
 }
 
 .gris {
@@ -46,4 +47,8 @@ body {
 
 .fadeIn {
     animation-name: fadeIn;
+}
+
+.ck-editor__editable {
+    min-height: 200px !important;
 }
