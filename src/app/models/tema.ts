@@ -16,6 +16,17 @@ export class Tema{
     this.fecha = fecha;
   }
 
+  public toObject() {
+    return {
+      id_tema: this.id_tema,
+      id_creador: this.id_creador,
+      nombretema: this.nombretema,
+      id_grupo: this.id_grupo,
+      id_seccion: this.id_seccion,
+      fecha: this.fecha
+    };
+  }
+
   public setidtema(id_tema: number){
     this.id_tema = id_tema;
   }

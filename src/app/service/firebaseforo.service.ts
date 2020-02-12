@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../models/user';
 import { Mensaje } from '../models/mensaje';
+import { Tema } from '../models/tema';
 
 @Injectable()
 export class FirebaseForoService {
@@ -31,6 +32,11 @@ export class FirebaseForoService {
     return this.items.valueChanges();
   }
 
+  getSeccion( grupo: number, seccion: number){
+    this.items = this.fb.collection<any>('seccion', ref => ref.where('id_grupo', '==', grupo).where('id_seccion', '==', seccion));
+    return this.items.valueChanges();
+  }
+
 
 // zona de los temas
   getTemas( grupo: number, seccion: number){
@@ -41,18 +47,28 @@ export class FirebaseForoService {
     return this.items.valueChanges();
   }
 
-  getThisTema(grupo: number, seccion: number, nombre: string){
+  getThisTema(grupo: number, seccion: number, tema: number){
     this.items = this.fb.collection<any>('tema',
                   ref => ref.where('id_grupo', '==', grupo)
                   .where('id_seccion', '==', seccion)
-                  .where('nombretema', '==', nombre));
+                  .where('id_tema', '==', tema));
     return this.items.valueChanges();
   }
+
+  savethisTema( tema: Tema){
+    return this.fb.collection('tema')
+            .doc(""+tema.getGrupo()+tema.getSeccion()+tema.getidtema())
+            .set(tema.toObject());
+  }
+  
+  
 
 
 // zona de mensajes
   getMensajes( tema: number, seccion: number, grupo: number){
-    this.items = this.fb.collection<any>('mensajes', ref => ref.where('tema', '==', tema).orderBy('id'));
+    this.items = this.fb.collection<any>('mensajes', ref => ref.where('tema', '==', tema)
+                                                                .where('seccion', '==', seccion)
+                                                                .where('grupo', '==', grupo).orderBy('id'));
     return this.items.valueChanges();
   }
 

@@ -10,4 +10,8 @@ export class Seccion{
     this.nombre = nombre;
   }
 
+  public getNombre(){
+    return this.nombre;
+  }
+
 }

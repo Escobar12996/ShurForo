@@ -15,7 +15,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export class HiloComponent implements OnInit {
 
   // necesario para la carga
-  private temaNombre: string;
+  private temaid: number;
   private seccion: number;
   private grupo: number;
   private usuarioexiste = false;
@@ -53,18 +53,19 @@ export class HiloComponent implements OnInit {
     // obtenemos que tema cargar con estos parametros
     this.grupo = parseInt( this.ruta.snapshot.params.id_grupo );
     this.seccion = parseInt( this.ruta.snapshot.params.id_seccion );
-    this.temaNombre = this.ruta.snapshot.params.nombredelhilo;
+    this.temaid = parseInt( this.ruta.snapshot.params.nombredelhilo );
 
     // buscamos y cargamos el tema, dentro de este cargamos los mensajes etc
-    this.fc.getThisTema(this.grupo, this.seccion, this.temaNombre).subscribe(data => {
+    this.fc.getThisTema(this.grupo, this.seccion, this.temaid).subscribe(data => {
 
+      console.log(data);
       // si hay datos en el array
       if (data.length > 0) {
         // recorremos el array
         data.forEach(e => {
 
           // si de verdad existe el tema en el array
-          if (e['nombretema'] === this.temaNombre && e['id_grupo'] === this.grupo && e['id_seccion'] === this.seccion) {
+          if (e['id_tema'] === this.temaid && e['id_grupo'] === this.grupo && e['id_seccion'] === this.seccion) {
 
             // cargamos el tema en el objeto de tema
             this.tema = new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']);
@@ -129,10 +130,10 @@ export class HiloComponent implements OnInit {
 
   // devuelve el id del usuario
   getusuario(id: number){
-      for (let i = 0; i < this.usuarios.length; i++) {
-        if (this.usuarios[i].getId() === id){
-          return this.usuarios[i];
-        }
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].getId() === id){
+        return this.usuarios[i];
       }
+    }
   }
 }

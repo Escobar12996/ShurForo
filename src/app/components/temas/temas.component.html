@@ -1,34 +1,31 @@
 <div class="container fadeIn animated fast mb-5 pb-5">
-    <div class="mt-5 p-4 micont bg-white">
-        <div class="p-4">
-            <h5 class="text-success">{{seccion}}</h5>
-            <hr class="bg-dark">
 
+    <h5 class="text-danger mt-5 mb-5" *ngIf="seccionC !== undefined">Zona {{seccionC.getNombre()}}</h5>
+    <hr class="bg-danger">
 
-            <div *ngFor="let tema of temas">
-                <button [routerLink]="['/hilo',grupo,seccion,tema.nombretema]" class="btn btn-outline-primary mb-2 btn-block">
-                    <div class="row p-1 mb-1 text-left">
-                        <div class="col-8">
-                            {{tema.nombretema}}
-                        </div>
-                        <div class="col-4 text-right">
-                            Temas: 3
-                        </div>
-                    </div>
-                </button>
+    <div class="mt-2 p-2 pt-3 micont bg-light border rounded" *ngFor="let tema of temas">
+        <button [routerLink]="['/hilo',grupo,seccion,tema.getidtema()]" class="btn btn-outline-primary mb-2 btn-block">
+            <div class="row p-1 mb-1 text-left">
+                <div class="col-8">
+                    {{tema.nombretema}}
+                </div>
+                <div class="col-4 text-right">
+                    Mensaje/s
+                </div>
             </div>
+        </button>
+    </div>
 
 
-            <div class="row justify-content-end mt-2">
-                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bd-example-modal-lg">
-                    Nuevo Hilo
-                </button>
-            </div>
-        </div>
+    <div class="row justify-content-end bg-white mt-4 p-2" *ngIf="temaC == true && tema != undefined">
+        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bd-example-modal-lg">
+            Nuevo Hilo
+        </button>
     </div>
 </div>
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+<div class="modal fade bd-example-modal-lg" *ngIf="temaC == true && tema != undefined" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="container">
@@ -36,24 +33,22 @@
                     <div class="col-12 text-center bg-danger p-3">
                         <h2 class="text-white">Crear Hilo Nuevo</h2>
                     </div>
-                    <form class="col-12 mt-3" #formulario="ngForm">
+                    <form class="col-12 mt-3" (ngSubmit)="enviarTema(formulario)" #formulario="ngForm">
+
                         <div class="form-group">
-                            <label for="exampleFormControlInput1">Nombre del Hilo <span class="text-danger fadeIn animated"> nombre no valido</span></label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1">
+                            <label for="exampleFormControlInput1">Nombre del Hilo <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['tema'].errors"> nombre no valido</span></label>
+                            <input type="text" required class="form-control" name="tema" [(ngModel)]="tema.nombretema" id="exampleFormControlInput1">
                         </div>
 
-                        <span class="text-danger fadeIn animated">Contenido no valido</span>
-                        <ckeditor class="ck-editor__editable" name="mensaje" required [editor]="editor"></ckeditor>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['mensaje'].errors">Contenido no valido</span>
+                        <ckeditor class="ck-editor__editable" name="mensaje" [(ngModel)]="mensaje.mensaje" required [editor]="editor"></ckeditor>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-outline-danger mt-3">Enviar Comentario</button>
 
+                            <button type="submit" class="btn btn-outline-danger mt-3">Enviar Comentario</button>
                         </div>
                     </form>
                 </div>
-
             </div>
-
-
         </div>
     </div>
 </div>
