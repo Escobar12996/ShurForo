@@ -10,7 +10,7 @@
                     {{tema.nombretema}}
                 </div>
                 <div class="col-4 text-right">
-                    Mensaje/s
+                    <p class="text-dark">Ultima Actualizacion: {{tema.fecha | date:'yyyy-MM-dd HH:mm:ss'}}</p>
                 </div>
             </div>
         </button>
@@ -18,37 +18,36 @@
 
 
     <div class="row justify-content-end bg-white mt-4 p-2" *ngIf="temaC == true && tema != undefined">
-        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <button type="button" (click)="mostrarModalInfo()" class="btn btn-outline-danger">
             Nuevo Hilo
         </button>
     </div>
 </div>
 
+<ng-template #myModalInfo let-modal>
 
-<div class="modal fade bd-example-modal-lg" *ngIf="temaC == true && tema != undefined" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="container">
-                <div class="row mb-3">
-                    <div class="col-12 text-center bg-danger p-3">
-                        <h2 class="text-white">Crear Hilo Nuevo</h2>
-                    </div>
-                    <form class="col-12 mt-3" (ngSubmit)="enviarTema(formulario)" #formulario="ngForm">
-
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Nombre del Hilo <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['tema'].errors"> nombre no valido</span></label>
-                            <input type="text" required class="form-control" name="tema" [(ngModel)]="tema.nombretema" id="exampleFormControlInput1">
-                        </div>
-
-                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['mensaje'].errors">Contenido no valido</span>
-                        <ckeditor class="ck-editor__editable" name="mensaje" [(ngModel)]="mensaje.mensaje" required [editor]="editor"></ckeditor>
-                        <div class="text-center">
-
-                            <button type="submit" class="btn btn-outline-danger mt-3">Enviar Comentario</button>
-                        </div>
-                    </form>
+    <div class="modal-content">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Crear Hilo Nuevo</h2>
                 </div>
+                <form class="col-12 mt-3" (ngSubmit)="enviarTema(formulario)" #formulario="ngForm">
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nombre del Hilo <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['tema'].errors"> nombre no valido</span></label>
+                        <input type="text" required class="form-control" name="tema" [(ngModel)]="tema.nombretema" id="exampleFormControlInput1">
+                    </div>
+                    <div class="m-3 p-1" *ngIf="!(formulario.submitted && formulario.controls['mensaje'].errors)"> </div>
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['mensaje'].errors">Contenido no valido</span>
+                    <ckeditor class="ck-editor__editable" name="mensaje" [(ngModel)]="mensaje.mensaje" required [editor]="editor"></ckeditor>
+                    <div class="text-center">
+
+                        <button type="submit" class="btn btn-outline-danger mt-3">Enviar Comentario</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+
+</ng-template>

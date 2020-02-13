@@ -8,4 +8,40 @@
             <app-zonaforo [grupoid]="value.id_grupo"></app-zonaforo>
         </div>
     </div>
+
+    <div class="row text-right align-content-end mt-3" *ngIf="admin">
+        <div class="col-12">
+            <button (click)='mostrarModalInfo()' class="btn btn-outline-danger">
+                Crear Nuevo Grupo
+            </button>
+        </div>
+    </div>
+
 </div>
+
+
+
+
+<ng-template #mymodalforo let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Crear Nuevo Grupo</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <form>
+                        <input type="text" class="form-control">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="button" class="btn btn-outline-danger mt-3">
+                                Nueva Seccion
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

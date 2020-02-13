@@ -43,7 +43,8 @@ export class FirebaseForoService {
 
     this.items = this.fb.collection<any>('tema',
                   ref => ref.where('id_grupo', '==', grupo)
-                  .where('id_seccion', '==', seccion));
+                  .where('id_seccion', '==', seccion)
+                  .orderBy('fecha', 'desc'));
     return this.items.valueChanges();
   }
 
@@ -61,14 +62,19 @@ export class FirebaseForoService {
             .set(tema.toObject());
   }
   
-  
+  updateTema(tema: Tema){
+    return this.fb.collection('tema')
+            .doc(""+tema.getGrupo()+tema.getSeccion()+tema.getidtema())
+            .update(tema.toObject());
+  }
 
 
 // zona de mensajes
   getMensajes( tema: number, seccion: number, grupo: number){
     this.items = this.fb.collection<any>('mensajes', ref => ref.where('tema', '==', tema)
                                                                 .where('seccion', '==', seccion)
-                                                                .where('grupo', '==', grupo).orderBy('id'));
+                                                                .where('grupo', '==', grupo)
+                                                                .orderBy('id'));
     return this.items.valueChanges();
   }
 

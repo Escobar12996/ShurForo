@@ -9,8 +9,10 @@ export class User {
   private sexo: string;
   private pais: string;
   private aficiones: Array<string> = [];
+  private admin: boolean;
+  private bloqueado: boolean;
 
-  constructor(id: number = 0, usuario = "", email = '', contrasena = "", nombreappe = "", sexo = "", pais = "", aficiones = []){
+  constructor(id: number = 0, usuario = "", email = '', contrasena = "", nombreappe = "", sexo = "", pais = "", aficiones = [], admin = false, bloqueado = false){
     this.id = id;
     this.usuario = usuario;
     this.email = email;
@@ -19,6 +21,8 @@ export class User {
     this.sexo = sexo;
     this.pais = pais;
     this.aficiones = aficiones;
+    this.admin = admin;
+    this.bloqueado = bloqueado;
   }
   public toObject() {
     return {
@@ -29,6 +33,8 @@ export class User {
       sexo: this.sexo,
       pais: this.pais,
       aficiones: this.aficiones,
+      admin: this.admin,
+      bloqueado: this.bloqueado,
     };
   }
 
@@ -42,6 +48,8 @@ export class User {
       sexo: this.sexo,
       pais: this.pais,
       aficiones: this.aficiones,
+      admin: this.admin,
+      bloqueado: this.bloqueado,
     };
   }
 
@@ -100,6 +108,14 @@ export class User {
     this.aficiones = aficion;
   }
 
+  public setAdmin(admin: boolean){
+    this.admin = admin;
+  }
+
+  public setBloqueado(bloqueado: boolean){
+    this.bloqueado = bloqueado;
+  }
+
   public getId(){
     return this.id;
   }
@@ -130,5 +146,13 @@ export class User {
 
   public getAficiones(){
     return this.aficiones;
+  }
+
+  public isAdmin() {
+    return this.admin;
+  }
+
+  public isBloqueado(){
+    return this.bloqueado;
   }
 }

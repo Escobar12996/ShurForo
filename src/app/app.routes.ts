@@ -8,19 +8,23 @@ import { UserdataComponent } from './components/userdata/userdata.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TemasComponent } from './components/temas/temas.component';
 import { HiloComponent } from './components/hilo/hilo.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'userdata', component: UserdataComponent },
+  { path: 'administracion', component: AdminComponent },
+  { path: 'notfound', component: NotfoundComponent },
 
   { path: 'foro', component: ForoComponent },
   { path: 'temas/:id_grupo/:id_seccion', component: TemasComponent },
   { path: 'hilo/:id_grupo/:id_seccion/:nombredelhilo', component: HiloComponent },
 
   //poner encima de este
-  { path: '**', pathMatch: 'full', redirectTo: 'home'}
+  { path: '**', pathMatch: 'full', redirectTo: 'notfound'}
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

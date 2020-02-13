@@ -14,16 +14,16 @@ export class LoginComponent implements OnInit {
 
   private usuario: User;
   private valido = true;
+  private bloqueado = false;
 
 
-  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) {
-  }
-  
+  constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) {}
+
   ngOnInit() {
     this.usuario = JSON.parse(sessionStorage.getItem('usuario'));
     if(this.usuario === null){
       this.usuario = new User();
-    }else{
+    } else {
       this.router.navigate(['/home']);
     }
   }
@@ -45,14 +45,23 @@ export class LoginComponent implements OnInit {
           ususac['nombreappe'],
           ususac['sexo'],
           ususac['pais'],
-          ususac['aficiones']
+          ususac['aficiones'],
+          ususac['admin'],
+          ususac['bloqueado']
           );
-          this.valido = true;
-          this.globalService.usuario = JSON.stringify(user.toObject());
-          this.router.navigate(['/home']);
 
+          console.log(this.usuario);
+          if (ususac['bloqueado'] === true){
+            this.bloqueado = true;
+            this.valido = true;
+          } else {
+            this.valido = true;
+            this.globalService.usuario = user;
+            this.router.navigate(['/home']);
+          }
       } else {
         this.valido = false;
+        this.bloqueado = false;
       }
     });
   }

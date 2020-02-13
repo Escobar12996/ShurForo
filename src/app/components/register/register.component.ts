@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
           console.log(this.usuario.getId());
           this._fc.saveUser(this.usuario);
   
-          this.globalService.usuario = JSON.stringify(this.usuario.toObject());
+          this.globalService.usuario = this.usuario;
           this.router.navigate(['/home']);
           
           this.unavuelta = false;

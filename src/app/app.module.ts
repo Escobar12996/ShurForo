@@ -6,6 +6,7 @@ import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +26,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { ZonaforoComponent } from './components/zonaforo/zonaforo.component';
 import { TemasComponent } from './components/temas/temas.component';
 import { HiloComponent } from './components/hilo/hilo.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 
 
@@ -41,6 +44,8 @@ import { HiloComponent } from './components/hilo/hilo.component';
     ZonaforoComponent,
     TemasComponent,
     HiloComponent,
+    AdminComponent,
+    NotfoundComponent,
   ],
   imports: [
     CKEditorModule,
@@ -52,6 +57,7 @@ import { HiloComponent } from './components/hilo/hilo.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
+    NgbModule,
   ],
   providers: [
     FirebaseForoService

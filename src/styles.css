@@ -6,6 +6,7 @@ body {
 
 .tamano {
     min-height: 300px;
+    min-width: 700px;
 }
 
 .gris {

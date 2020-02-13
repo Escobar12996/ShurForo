@@ -35,7 +35,7 @@ export class HiloComponent implements OnInit {
 
 
 
-  constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute) {
+  constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute, private router: Router) {
 
     // cambia la bandera para mostrar el wisiwi ese o el login
     if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
@@ -94,6 +94,9 @@ export class HiloComponent implements OnInit {
             );
           }
         });
+        // si no a cargado nada, lo saco de la pagina
+      } else {
+        this.router.navigate(['/notfound']);
       }
       }
     );
@@ -109,10 +112,15 @@ export class HiloComponent implements OnInit {
 
       // le agrego el id
       this.mensaje.setId(this.ultimoid + 1);
+      this.mensaje.setUsuario(JSON.parse(sessionStorage.getItem('usuario'))['id']);
       // aumento el ultimo id
       this.ultimoid++;
       // almaceno el mensaje
       this.fc.saveMensaje(this.mensaje);
+
+      //actualizo la fecha
+      this.tema.setFecha(new Date().getTime());
+      this.fc.updateTema(this.tema);
 
       // creo un nuevo mensaje
       this.mensaje = new Mensaje(this.tema.getidtema(), '',

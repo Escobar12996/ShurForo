@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tema } from '../../models/tema';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
@@ -6,11 +6,13 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Seccion } from '../../models/seccion';
 import { NgForm } from '@angular/forms';
 import { Mensaje } from '../../models/mensaje';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-temas',
   templateUrl: './temas.component.html'
 })
+
 export class TemasComponent implements OnInit {
 
   public seccion: number;
@@ -23,8 +25,10 @@ export class TemasComponent implements OnInit {
   public ultimoidtema = 0;
   public mensaje: Mensaje;
   public temaC = false;
+  @ViewChild("myModalInfo", {static: true}) myModalInfo: TemplateRef<any>;
 
-  constructor( public fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute ) {}
+
+  constructor( public fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute, private modalService: NgbModal ) {}
 
   ngOnInit() {
     this.grupo = parseInt(this.ruta.snapshot.params.id_grupo);
@@ -38,16 +42,21 @@ export class TemasComponent implements OnInit {
     );
 
     this.fc.getTemas(this.grupo, this.seccion).subscribe(data => {
-      this.temas = [];
-      console.log(data);
-      data.forEach(e => {
-          this.temas.push(new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']));
-          if (this.ultimoidtema <= e['id_tema']){
-            this.ultimoidtema = e['id_tema'];
-          }
-      });
+
+      if (data.length > 0) {
+        this.temas = [];
+        console.log(data);
+        data.forEach(e => {
+            this.temas.push(new Tema( e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']));
+            if (this.ultimoidtema <= e['id_tema']){
+              this.ultimoidtema = e['id_tema'];
+            }
+        });
+      } else {
+        this.router.navigate(['/notfound']);
       }
-    );
+
+    });
 
     if (JSON.parse(sessionStorage.getItem('usuario')) != undefined ){
       this.tema = new Tema(this.ultimoidtema + 1,
@@ -71,9 +80,13 @@ export class TemasComponent implements OnInit {
       this.formValido = true;
       this.fc.savethisTema(this.tema);
       this.fc.saveMensaje(this.mensaje);
-      this.router.navigate(['/home/'+this.tema.getGrupo()+'/'+this.tema.getSeccion()+'/'+this.tema.getNombreTema()]);
+      this.modalService.dismissAll();
     } else {
       this.formValido = false;
     }
+  }
+
+  mostrarModalInfo() {
+    this.modalService.open(this.myModalInfo);
   }
 }

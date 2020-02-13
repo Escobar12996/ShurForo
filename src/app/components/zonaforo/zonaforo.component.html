@@ -10,3 +10,35 @@
         </div>
     </button>
 </div>
+<div class="text-right" *ngIf="admin">
+    <button (click)='mostrarModalInfo()' class="btn btn-outline-danger">
+        Crear Nueva Seccion
+    </button>
+</div>
+
+
+<ng-template #mymodal let-modal>
+
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Crear Nueva Seccion</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <form>
+                        <input type="text" class="form-control">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="button" class="btn btn-outline-danger mt-3">
+                                Nueva Seccion
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
