@@ -12,6 +12,8 @@ import { LocalstorageService } from '../../service/localstorage.service';
 })
 export class RegisterComponent implements OnInit {
 
+  repebool = false;
+  repetida = '';
   unavuelta = true;
   validado = false;
   usuario: User;
@@ -32,8 +34,13 @@ export class RegisterComponent implements OnInit {
   }
 
   primerEnvio( form: NgForm ){
-    if (!form.invalid && this.validanombre && this.validaemail){
-      this.validado=true;
+    if (!form.invalid && this.validanombre && this.validaemail && this.repetida === this.usuario.getContrasena() ){
+      this.validado = true;
+      this.repebool = false;
+    } else if (this.repetida !== this.usuario.getContrasena()) {
+      this.repebool = true;
+    } else {
+      this.repebool = false;
     }
   }
 

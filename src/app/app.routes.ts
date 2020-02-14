@@ -21,10 +21,10 @@ const APP_ROUTES: Routes = [
 
   { path: 'foro', component: ForoComponent },
   { path: 'temas/:id_grupo/:id_seccion', component: TemasComponent },
-  { path: 'hilo/:id_grupo/:id_seccion/:nombredelhilo', component: HiloComponent },
+  { path: 'hilo/:id_grupo/:id_seccion/:id_tema', component: HiloComponent },
 
   //poner encima de este
-  { path: '**', pathMatch: 'full', redirectTo: 'notfound'}
+  { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

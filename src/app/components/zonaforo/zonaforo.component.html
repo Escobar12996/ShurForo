@@ -1,5 +1,5 @@
 <div *ngFor="let seccion of secciones" class="mb-2">
-    <button [routerLink]="['/temas',seccion.id_grupo,seccion.id_seccion]" class="btn btn-outline-primary btn-block">
+    <button [routerLink]="['/temas',seccion.getGrupo(),seccion.getSeccion()]" class="btn btn-outline-primary btn-block">
         <div class="row p-1 text-left">
             <div class="col-8">
                 {{seccion.nombre}}
@@ -9,6 +9,10 @@
             </div>
         </div>
     </button>
+    <div class="mt-1" *ngIf="admin">
+        <button class="btn btn-sm btn-danger mr-1" (click)="eliminarbut(seccion.getSeccion())">Eliminar Hilo</button>
+        <button class="btn btn-sm btn-warning" (click)="editarbut(seccion.getSeccion(), seccion.getNombre())">Editar Nombre</button>
+    </div>
 </div>
 <div class="text-right" *ngIf="admin">
     <button (click)='mostrarModalInfo()' class="btn btn-outline-danger">
@@ -23,14 +27,32 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 text-center bg-danger p-3">
-                    <h2 class="text-white">Crear Nueva Seccion</h2>
+                    <h2 class="text-white" *ngIf="!editar">Crear Nueva Seccion</h2>
+                    <h2 class="text-white" *ngIf="editar">Editar Seccion</h2>
                 </div>
-                <div class="col-12 mt-3 mb-3">
-                    <form>
-                        <input type="text" class="form-control">
+                <div class="col-12 mt-3 mb-3" *ngIf="!editar">
+                    <form (ngSubmit)="enviarSeccion(formulario)" #formulario="ngForm">
+                        <div class="m-3 p-1" *ngIf="!formulario.submitted"> </div>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['nombre'].errors">Contenido no valido</span>
+                        <input type="text" required [(ngModel)]="seccion.nombre" name="nombre" class="form-control">
                         <div class="row">
                             <div class="col-12 text-right">
-                                <button type="button" class="btn btn-outline-danger mt-3">
+                                <button type="submit" class="btn btn-outline-danger mt-3">
+                                Nueva Seccion
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-12 mt-3 mb-3" *ngIf="editar">
+                    <form (ngSubmit)="editarf(formulario)" #formulario2="ngForm">
+                        <div class="m-3 p-1" *ngIf="!formulario2.submitted"> </div>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario2.submitted && formulario2.controls['nombre'].errors">Contenido no valido</span>
+                        <input type="text" required [(ngModel)]="seccionmod.nombre" name="nombre" class="form-control">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="submit" class="btn btn-outline-danger mt-3">
                                 Nueva Seccion
                             </button>
                             </div>
@@ -40,5 +62,26 @@
             </div>
         </div>
 
+    </div>
+</ng-template>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Deseas Borrar</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="borrar()" class="btn btn-outline-danger mt-3">
+                        Borrar
+                    </button>
+                    <button type="button" (click)="noborrar()" class="btn btn-outline-success mt-3">
+                        No Borrar
+                    </button>
+
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>

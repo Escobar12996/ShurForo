@@ -22,6 +22,11 @@
                     <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['pass'].errors"> es necesario mas de 8 caracteres</span>
                     <input type="password" required minlength="8" class="form-control" [(ngModel)]="usuario.contrasena" name="pass" placeholder="Contraseña">
                 </div>
+                <div class="form-group">
+                    <label>Repite la Contraseña</label>
+                    <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && repebool"> las contraseñas no son iguales</span>
+                    <input type="password" required minlength="8" class="form-control" [(ngModel)]="repetida" name="pass" placeholder="Contraseña">
+                </div>
                 <button class="btn btn-primary" type="submit"> Enviar </button>
             </form>
         </div>

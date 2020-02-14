@@ -4,6 +4,13 @@
 
         <div class="p-4" *ngFor="let value of grupos">
             <h5 class="text-success">{{value.nombre}}</h5>
+            <button *ngIf="admin" (click)="eliminar(value.getIdgrupo())" class="btn btn-danger mr-1">
+                Eliminar
+            </button>
+            <button *ngIf="admin" (click)="editarFu(value.getIdgrupo())" class="btn btn-warning">
+                Editar Grupo
+            </button>
+
             <hr class="bg-dark">
             <app-zonaforo [grupoid]="value.id_grupo"></app-zonaforo>
         </div>
@@ -27,14 +34,17 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 text-center bg-danger p-3">
-                    <h2 class="text-white">Crear Nuevo Grupo</h2>
+                    <h2 class="text-white" *ngIf="!editar">Crear Nuevo Grupo</h2>
+                    <h2 class="text-white" *ngIf="editar">Editar Grupo</h2>
                 </div>
                 <div class="col-12 mt-3 mb-3">
-                    <form>
-                        <input type="text" class="form-control">
+                    <form (ngSubmit)="enviarGrupo(formulario)" #formulario="ngForm">
+                        <div class="m-3 p-1" *ngIf="!formulario.submitted"> </div>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['nombre'].errors">Contenido no valido</span>
+                        <input type="text" required [(ngModel)]="grupo.nombre" name="nombre" class="form-control">
                         <div class="row">
                             <div class="col-12 text-right">
-                                <button type="button" class="btn btn-outline-danger mt-3">
+                                <button type="submit" class="btn btn-outline-danger mt-3">
                                 Nueva Seccion
                             </button>
                             </div>

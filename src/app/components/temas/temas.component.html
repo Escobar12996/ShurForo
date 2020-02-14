@@ -14,6 +14,10 @@
                 </div>
             </div>
         </button>
+        <div class="" *ngIf="idu === tema.getCreador() || admin">
+            <button class="btn btn-sm btn-danger mr-1" (click)="eliminarbut(tema.getidtema(), tema.getCreador())">Eliminar Hilo</button>
+            <button class="btn btn-sm btn-warning" (click)="editarbut(tema.getidtema(), tema.getCreador(), tema.getNombreTema())">Editar Nombre</button>
+        </div>
     </div>
 
 
@@ -26,7 +30,7 @@
 
 <ng-template #myModalInfo let-modal>
 
-    <div class="modal-content">
+    <div class="modal-content" *ngIf="!editar">
         <div class="container">
             <div class="row mb-3">
                 <div class="col-12 text-center bg-danger p-3">
@@ -50,4 +54,45 @@
         </div>
     </div>
 
+    <div class="modal-content" *ngIf="editar">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Editar Hilo</h2>
+                </div>
+                <form class="col-12 mt-3" (ngSubmit)="actualizar(formulario)" #formulario="ngForm">
+
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nombre del Hilo<span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['tema'].errors"> nombre no valido</span></label>
+                        <input type="text" required class="form-control" name="tema" [(ngModel)]="temaed.nombretema" id="exampleFormControlInput1">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-outline-danger mt-3">Enviar Comentario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Deseas Borrar</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="eliminar()" class="btn btn-outline-danger mt-3">
+                        Borrar
+                    </button>
+                    <button type="button" (click)="noborrar()" class="btn btn-outline-success mt-3">
+                        No Borrar
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </ng-template>

@@ -33,12 +33,17 @@
                             <div class="card-body">
                                 <p class="card-text">{{ getusuario(mensaje.id_usuario).getUsuario() }}</p>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-3"></div>
                 </div>
             </div>
             <div [innerHTML]="mensaje.getMensaje()" class="col-12 m-3 tamano col-md-8"></div>
+        </div>
+        <div class="row" *ngIf="idu === mensaje.getUsuario() || admin">
+            <button class="btn btn-sm btn-danger mr-1" (click)="eliminar(mensaje.getId(), mensaje.getUsuario())">Eliminar Mensaje</button>
+            <button class="btn btn-sm btn-warning" (click)="editarbut(mensaje.getId(), mensaje.getUsuario(), mensaje.getMensaje())">Editar Mensaje</button>
         </div>
     </div>
 
@@ -62,3 +67,50 @@
         <a class="nav-link" *ngIf="!usuarioexiste" class="btn btn-outline-danger mt-2" [routerLink]="[ '/login']">Necesitas Conectarte Para Poder Comentar</a>
     </div>
 </div>
+
+<ng-template #mymodal let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Crear Nueva Seccion</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <form (ngSubmit)="edit(formulario)" #formulario="ngForm">
+                        <div class="m-3 p-1" *ngIf="!formulario.submitted"> </div>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['mensaje'].errors">Contenido no valido</span>
+                        <ckeditor class="ck-editor__editable" data={{mensajeed.mensaje}} [(ngModel)]="mensajeed.mensaje" name="mensaje" required [editor]="editor"></ckeditor>
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="submit" class="btn btn-outline-danger mt-3">
+                                Nueva Seccion
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Deseas Borrar</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="borrar()" class="btn btn-outline-danger mt-3">
+                        Borrar
+                    </button>
+                    <button type="button" (click)="noborrar()" class="btn btn-outline-success mt-3">
+                        No Borrar
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

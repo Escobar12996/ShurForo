@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseForoService } from '../../service/firebaseforo.service';
 import { Mensaje } from '../../models/mensaje';
@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { Tema } from '../../models/tema';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class HiloComponent implements OnInit {
   private usuarioexiste = false;
   public mensajes: Array<Mensaje>;
   public usuarios: Array<User>;
+  public idu: number;
+  public admin: false;
 
   // editor
   public editor = ClassicEditor;
@@ -29,17 +32,22 @@ export class HiloComponent implements OnInit {
   private ultimoid = 0;
   private valido = true;
   private mensaje: Mensaje = new Mensaje();
-
+  private mensajeed: Mensaje = new Mensaje();
+  @ViewChild("mymodal", {static: true}) myModalo: TemplateRef<any>;
+  @ViewChild("mymodalbor", {static: true}) mymodalbor: TemplateRef<any>;
+  
   // tema a mostrar
   private tema: Tema = new Tema(0,0,'cargando',0,0,0);
 
 
 
-  constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute, private router: Router) {
+  constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute, private router: Router, private modalService: NgbModal) {
 
     // cambia la bandera para mostrar el wisiwi ese o el login
     if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
       this.usuarioexiste = true;
+      this.idu = JSON.parse(sessionStorage.getItem('usuario'))['id'];
+      this.admin = JSON.parse(sessionStorage.getItem('usuario'))['admin'];
     }
 
     // obtiene todos los usuarios para almacenarlos en el array
@@ -53,10 +61,19 @@ export class HiloComponent implements OnInit {
     // obtenemos que tema cargar con estos parametros
     this.grupo = parseInt( this.ruta.snapshot.params.id_grupo );
     this.seccion = parseInt( this.ruta.snapshot.params.id_seccion );
-    this.temaid = parseInt( this.ruta.snapshot.params.nombredelhilo );
+    this.temaid = parseInt( this.ruta.snapshot.params.id_tema );
+
+    //cargo un tema para poder buscarlo en la bd
+    const temac = new Tema(parseInt( this.ruta.snapshot.params.id_tema ),
+                        0,
+                        '',
+                        parseInt( this.ruta.snapshot.params.id_seccion),
+                        parseInt( this.ruta.snapshot.params.id_grupo ),
+                        parseInt( this.ruta.snapshot.params.id_tema ));
+
 
     // buscamos y cargamos el tema, dentro de este cargamos los mensajes etc
-    this.fc.getThisTema(this.grupo, this.seccion, this.temaid).subscribe(data => {
+    this.fc.getThisTema(temac).subscribe(data => {
 
       console.log(data);
       // si hay datos en el array
@@ -72,9 +89,10 @@ export class HiloComponent implements OnInit {
 
             // actualizo el mensaje
             this.mensaje = new Mensaje(this.tema.getidtema(), '', 0, this.grupo,this.seccion, this.ultimoid);
+            this.mensajeed = new Mensaje(this.tema.getidtema(), '', 0, this.grupo,this.seccion, this.ultimoid);
 
             // recorro los mensajes para cargarlos
-            this.fc.getMensajes(this.tema.getidtema(), this.seccion, this.grupo).subscribe(dato => {
+            this.fc.getMensajes(this.tema).subscribe(dato => {
 
               // borro el array de los mensajes para que borre los anteriores
               this.mensajes = [];
@@ -143,5 +161,44 @@ export class HiloComponent implements OnInit {
         return this.usuarios[i];
       }
     }
+  }
+
+  eliminar(id: number, usuario: number){
+    this.mensajeed = new Mensaje(this.tema.getidtema(), '',
+                                  JSON.parse(sessionStorage.getItem('usuario'))['id'],
+                                  this.grupo,this.seccion,
+                                  this.ultimoid);
+
+    this.mensajeed.setId(id);
+    this.mensajeed.setUsuario(usuario);
+    this.modalService.open(this.mymodalbor);
+  }
+
+  editarbut(id: number, usuario: number, mensaje: string){
+    // le agrego el id
+    this.mensajeed.setId(id);
+    this.mensajeed.setUsuario(usuario);
+    this.mensajeed.setMensaje(mensaje);
+    this.modalService.open(this.myModalo);
+  }
+
+  edit(){
+    this.fc.upMensaje(this.mensajeed);
+
+    this.mensajeed = new Mensaje(this.tema.getidtema(), '',
+                                  JSON.parse(sessionStorage.getItem('usuario'))['id'],
+                                  this.grupo,this.seccion,
+                                  this.ultimoid);
+
+    this.modalService.dismissAll();
+  }
+
+  borrar(){
+    this.fc.delMensaje(this.mensajeed);
+    this.modalService.dismissAll();
+  }
+
+  noborrar(){
+    this.modalService.dismissAll();
   }
 }
