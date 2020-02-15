@@ -4,7 +4,7 @@
 
         <div class="p-4" *ngFor="let value of grupos">
             <h5 class="text-success">{{value.nombre}}</h5>
-            <button *ngIf="admin" (click)="eliminar(value.getIdgrupo())" class="btn btn-danger mr-1">
+            <button *ngIf="admin" (click)="eliminarbut(value.getIdgrupo())" class="btn btn-danger mr-1">
                 Eliminar
             </button>
             <button *ngIf="admin" (click)="editarFu(value.getIdgrupo())" class="btn btn-warning">
@@ -50,6 +50,27 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Deseas Borrar</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="borrar()" class="btn btn-outline-danger mt-3">
+                        Borrar
+                    </button>
+                    <button type="button" (click)="noborrar()" class="btn btn-outline-success mt-3">
+                        No Borrar
+                    </button>
+
                 </div>
             </div>
         </div>

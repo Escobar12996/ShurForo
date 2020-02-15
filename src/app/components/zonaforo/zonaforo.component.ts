@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { Tema } from '../../models/tema';
 import { Mensaje } from '../../models/mensaje';
+import { Grupo } from '../../models/grupo';
 
 @Component({
   selector: 'app-zonaforo',
@@ -35,8 +36,9 @@ export class ZonaforoComponent implements OnInit {
 
   ngOnInit() {
     this.seccion = new Seccion(this.grupoid, 0, '');
+    const grupocar = new Grupo('', this.grupoid);
 
-    this._fc.getSecciones(this.grupoid).subscribe(data => {
+    this._fc.getSecciones(grupocar).subscribe(data => {
       this.secciones = [];
       data.forEach(e => {
         this.secciones.push(new Seccion(e['id_grupo'], e['id_seccion'], e['nombre']));
@@ -82,7 +84,7 @@ export class ZonaforoComponent implements OnInit {
   }
 
   borrar(){
-    
+
     this._fc.getTemas(new Seccion(this.seccionmod.getGrupo(), this.seccionmod.getSeccion(), '')).subscribe(data => {
       data.forEach(e => {
         const temac = new Tema(e['id_tema'], e['id_creador'], e['nombretema'], e['id_seccion'], e['id_grupo'], e['fecha']);
@@ -91,7 +93,7 @@ export class ZonaforoComponent implements OnInit {
 
           // recorro los mensajes y los guardo
           dato.forEach(f => {
-    
+
               // los guardo en memoria
               const mensajebor = new Mensaje( f['tema'], f['mensaje'], f['usuario'], f['grupo'], f['seccion'], f['id']);
               this._fc.delMensaje(mensajebor);

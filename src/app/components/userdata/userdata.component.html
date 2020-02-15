@@ -1,1 +1,68 @@
-<p>userdata works!</p>
+<div class="container mt-3 p-3 fadeIn animated fast">
+    <div class="jumbotron">
+        <h1 class="display-4">Editar Usuario</h1>
+        <form>
+            <div class="form-group">
+                <label for="nombre">Usuario</label>
+                <!-- <span class="text-danger fadeIn animated"> es requerido con un minimo de 4 letras</span> -->
+                <span class="text-danger fadeIn animated" *ngIf="!validanombre"> usuario ya existe</span>
+                <input type="text" required minlength="4" (blur)="buscaUser($event.target.value)" [ngModel]="usuario.usuario" class="form-control" name="usuario" placeholder="Usuario">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Email</label>
+                <!-- <span class="text-danger fadeIn animated"> es requerido</span> -->
+                <span class="text-danger fadeIn animated" *ngIf="!validaemail"> email ya existe</span>
+                <input type="email" class="form-control" (blur)="buscaEmail($event.target.value)" name="email" [ngModel]="usuario.email" required email placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label>Contraseña Antigua</label>
+                <span class="text-danger fadeIn animated" *ngIf="!contrasenaviejaacertada"> no coincide</span>
+                <input type="password" (blur)="detectacontrasena($event.target.value)" class="form-control" placeholder="Contraseña">
+            </div>
+            <div class="form-row">
+                <div class="col-6">
+                    <label>Contraseña</label>
+                    <span class="text-danger fadeIn animated" *ngIf="!contrasenanuevaesacertada"> es necesario mas de 8 caracteres</span>
+                    <input type="password" class="form-control" (blur)="contrasenanueva($event.target.value, true)" name="passu" placeholder="Contraseña">
+                </div>
+                <div class="col-6">
+                    <label>Repite la Contraseña</label>
+                    <span class="text-danger fadeIn animated" *ngIf="!doscontrasenasbien"> las contraseñas no coinciden</span>
+                    <input type="password" class="form-control" (blur)="contrasenanueva($event.target.value, false)" name="passd" placeholder="Contraseña">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <span class="text-danger fadeIn animated"> es necesario el nombre y los apellidos</span>
+                <input type="text" class="form-control" name="nombreapellido" [ngModel]="usuario.nombreappe" required minlength="10" placeholder="Nombre y Apellidos">
+            </div>
+            <div class="form-check-inline">
+                <label class="mr-1" *ngIf="">Sexo:</label>
+                <input class="form-check-input mr-1 ml-1" [checked]="issexo('hombre')" type="radio" name="sexo" required id="exampleRadios1" value="hombre">
+                <label class="mr-1 ml-1">Hombre</label>
+                <input class="form-check-input ml-2" [checked]="issexo('mujer')" type="radio" name="sexo" required id="exampleRadios2" value="mujer">
+                <label>Mujer</label>
+                <span class="text-danger fadeIn animated ml-1 pb-2">Es necesario seleccionar alguno</span>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Pais</label>
+                <span class="text-danger fadeIn animated"> es necesario seleccionar un pais</span>
+                <select class="form-control" required name="pais">
+                <option value="España" [selected]="isselected('España')">España</option>
+                <option value="Alemania" [selected]="isselected('Alemania')">Alemania</option>
+                <option value="Francia" [selected]="isselected('Francia')">Francia</option>
+                <option value="Italia" [selected]="isselected('Italia')">Italia</option>
+                <option value="Inglaterra" [selected]="isselected('Inglaterra')">Inglaterra</option>
+              </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Aficiones</label>
+                <div class="row">
+                    <div *ngFor="let value of mArray" class="col-6">
+                        <input type="checkbox" class="mr-1" name="aficiones" value="{{value}}" (click)="chaficion(value)" [checked]="ischeck(value)"><label>{{value}}</label>
+                    </div>
+                </div>
+                <button type="submit " class="btn btn-primary mt-2 ">Enviar</button>
+            </div>
+        </form>
+    </div>

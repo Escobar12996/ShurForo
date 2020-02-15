@@ -40,10 +40,16 @@ export class FirebaseForoService {
             .update(grupo.toObject());
   }
 
+  delGrupo( grupo: Grupo ) {
+    return this.fb.collection('grupos')
+            .doc('' + grupo.getIdgrupo())
+            .delete();
+  }
+
 // zona de secciones
-  getSecciones( grupo: number ) {
+  getSecciones( grupo: Grupo ) {
     this.items = this.fb.collection<any>('seccion',
-                          ref => ref.where('id_grupo', '==', grupo));
+                          ref => ref.where('id_grupo', '==', grupo.getIdgrupo()));
     return this.items.valueChanges();
   }
 
