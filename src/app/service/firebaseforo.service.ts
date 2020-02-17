@@ -184,4 +184,8 @@ export class FirebaseForoService {
     return this.fb.collection('usuarios').doc(""+user.getId()).set(user.toRegister());
   }
 
+  upUser( user: User){
+    return this.fb.collection('usuarios').doc(""+user.getId()).update(user.toRegister());
+  }
+
 }

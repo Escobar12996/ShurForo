@@ -1,1 +1,46 @@
-<p>admin works!</p>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Usuario</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Bloqueado</th>
+                <th scope="col">Administrador</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let usu of usuarios">
+                <th scope="row">{{usu.getUsuario()}}</th>
+                <td>{{usu.getNombreappe()}}</td>
+                <td *ngIf="usu.isBloqueado() === true"><button (click)="chblock(usu.getId())" class="btn btn-block bg-warning">Desbloquear</button></td>
+                <td *ngIf="!(usu.isBloqueado() === true)"><button (click)="chblock(usu.getId())" class="btn btn-block bg-danger">Bloquear</button></td>
+                <td *ngIf="usu.isAdmin() === true"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-success">Quitar Admin</button></td>
+                <td *ngIf="!(usu.isAdmin() === true)"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-warning">Dar Admin</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white" *ngIf="tipo === true && opcion === true">Deseas Bloquear a: {{unnombre}}</h2>
+                    <h2 class="text-white" *ngIf="tipo === true && opcion === false">Deseas Desbloquear a: {{unnombre}}</h2>
+                    <h2 class="text-white" *ngIf="tipo === false && opcion === true">Deseas Dar Administrador a: {{unnombre}}</h2>
+                    <h2 class="text-white" *ngIf="tipo === false && opcion === false">Deseas Quitar Administrador a: {{unnombre}}</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="si()" class="btn btn-outline-danger mt-3">
+                      Si
+                  </button>
+                    <button type="button" (click)="no()" class="btn btn-outline-success mt-3">
+                      No
+                  </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

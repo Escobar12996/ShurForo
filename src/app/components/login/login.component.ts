@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(public _fc: FirebaseForoService, private router: Router, private globalService: LocalstorageService) {}
 
   ngOnInit() {
-    this.usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    this.usuario = JSON.parse(localStorage.getItem('usuario'));
     if(this.usuario === null){
       this.usuario = new User();
     } else {
@@ -50,13 +50,12 @@ export class LoginComponent implements OnInit {
           ususac['bloqueado']
           );
 
-          console.log(this.usuario);
           if (ususac['bloqueado'] === true){
             this.bloqueado = true;
             this.valido = true;
           } else {
             this.valido = true;
-            this.globalService.usuario = user;
+            this.globalService.theItem = '' + user.getId();
             this.router.navigate(['/home']);
           }
       } else {

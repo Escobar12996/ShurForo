@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
-import { of, fromEvent } from 'rxjs';
 import { LocalstorageService } from '../../../service/localstorage.service';
 import { FirebaseForoService } from '../../../service/firebaseforo.service';
+import { SubscriptionLike } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -13,48 +13,59 @@ export class NavbarComponent implements OnInit {
 
   private login = false;
   private admin = false;
-  private nombre = "";
-  private idu: number;
+  private nombre = '';
   private usuario: User;
+  private cargado = false;
+
+  private bucle: SubscriptionLike;
 
   constructor(private router: Router, private globalService: LocalstorageService, public _fc: FirebaseForoService) {}
 
   ngOnInit() {
-    this.login = false;
-    this.admin = false;
 
-    this.globalService.itemValue.subscribe((nextValue) => {
-
-      this.usuario = this.globalService.usuario;
-
-      if (nextValue != null) {
+    this.globalService.itemValue.subscribe((nextValue: string) => {
+      this.bucle = this._fc.getUsuarioId(parseInt(nextValue)).subscribe(data => {
+        data.forEach(e => {
+          this.usuario = new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones'],e['admin'], e['bloqueado']);
           this.login = true;
-          this.nombre = nextValue['nombreappe'];
-          this.admin = nextValue['admin'];
+          this.nombre = this.usuario.getUsuario();
+          if (e['admin']) {
+            this.admin = true;
+          }
 
-      } else {
-        this.login = false;
-        this.admin = false;
-      }
-      return null;
+          if (e['bloqueado']){
+            this.logOut();
+          }
+        });
+      });
     });
 
-    if (JSON.parse(sessionStorage.getItem('usuario')) !== null){
-      this.usuario = JSON.parse(sessionStorage.getItem('usuario'));
-      this.login = true;
-      this.nombre = JSON.parse(sessionStorage.getItem('usuario'))['nombreappe'];
-      this.admin = JSON.parse(sessionStorage.getItem('usuario'))['admin'];
-      console.log("2");
-    } else {
-      this.login = false;
-      this.admin = false;
+    if (JSON.parse(localStorage.getItem('theItem')) !== null && this.cargado === false){
+
+      this.bucle = this._fc.getUsuarioId(parseInt(localStorage.getItem('theItem'))).subscribe(data => {
+        data.forEach(e => {
+          this.usuario = new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones'],e['admin'], e['bloqueado']);
+          console.log(this.usuario);
+          this.login = true;
+          this.nombre = this.usuario.getUsuario();
+          if (e['admin']) {
+            this.admin = true;
+          }else {
+            this.admin = false;
+          }
+          if (e['bloqueado']){
+            this.logOut();
+          }
+        });
+      });
     }
   }
 
   logOut(){
     this.globalService.limpiar();
-    this.router.navigate(['/login']);
+    this.usuario = undefined;
     this.login = false;
     this.admin = false;
+    this.router.navigate(['/login']);
   }
 }

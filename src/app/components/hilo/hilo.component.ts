@@ -23,7 +23,7 @@ export class HiloComponent implements OnInit {
   public mensajes: Array<Mensaje>;
   public usuarios: Array<User>;
   public idu: number;
-  public admin: false;
+  public admin = false;
 
   // editor
   public editor = ClassicEditor;
@@ -44,17 +44,23 @@ export class HiloComponent implements OnInit {
   constructor(public fc: FirebaseForoService, private ruta: ActivatedRoute, private router: Router, private modalService: NgbModal) {
 
     // cambia la bandera para mostrar el wisiwi ese o el login
-    if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
+    if(localStorage.getItem('theItem') !== null) {
       this.usuarioexiste = true;
-      this.idu = JSON.parse(sessionStorage.getItem('usuario'))['id'];
-      this.admin = JSON.parse(sessionStorage.getItem('usuario'))['admin'];
+      this.idu = parseInt(localStorage.getItem('theItem'));
+      this.fc.getUsuarioId(parseInt(localStorage.getItem('theItem'))).subscribe(data => {
+        data.forEach(e => {
+          if (e['admin']){
+            this.admin = true;
+          }
+        });
+      });
     }
 
     // obtiene todos los usuarios para almacenarlos en el array
     this.fc.getUsuarios().subscribe(data => {
       this.usuarios = [];
       data.forEach(e => {
-        this.usuarios.push(new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones']));
+        this.usuarios.push(new User(e['id'],e['usuario'] ,e['email'],e['contrasena'],e['nombreappe'],e['sexo'],e['pais'],e['aficiones'],e['admin'], e['bloqueado']));
       });
     });
 
@@ -80,7 +86,7 @@ export class HiloComponent implements OnInit {
       if (data.length > 0) {
         // recorremos el array
         data.forEach(e => {
-
+          console.log("fsdgfsdgsd");
           // si de verdad existe el tema en el array
           if (e['id_tema'] === this.temaid && e['id_grupo'] === this.grupo && e['id_seccion'] === this.seccion) {
 
@@ -130,7 +136,7 @@ export class HiloComponent implements OnInit {
 
       // le agrego el id
       this.mensaje.setId(this.ultimoid + 1);
-      this.mensaje.setUsuario(JSON.parse(sessionStorage.getItem('usuario'))['id']);
+      this.mensaje.setUsuario(parseInt(localStorage.getItem('theItem')));
       // aumento el ultimo id
       this.ultimoid++;
       // almaceno el mensaje
@@ -142,7 +148,7 @@ export class HiloComponent implements OnInit {
 
       // creo un nuevo mensaje
       this.mensaje = new Mensaje(this.tema.getidtema(), '',
-                                  JSON.parse(sessionStorage.getItem('usuario'))['id'],
+                                  parseInt(localStorage.getItem('theItem')) ,
                                   this.grupo,this.seccion,
                                   this.ultimoid);
       // pongo el valido a true
@@ -165,7 +171,7 @@ export class HiloComponent implements OnInit {
 
   eliminar(id: number, usuario: number){
     this.mensajeed = new Mensaje(this.tema.getidtema(), '',
-                                  JSON.parse(sessionStorage.getItem('usuario'))['id'],
+                                  parseInt(localStorage.getItem('theItem')),
                                   this.grupo,this.seccion,
                                   this.ultimoid);
 
@@ -186,7 +192,7 @@ export class HiloComponent implements OnInit {
     this.fc.upMensaje(this.mensajeed);
 
     this.mensajeed = new Mensaje(this.tema.getidtema(), '',
-                                  JSON.parse(sessionStorage.getItem('usuario'))['id'],
+                                  parseInt(localStorage.getItem('theItem')),
                                   this.grupo,this.seccion,
                                   this.ultimoid);
 

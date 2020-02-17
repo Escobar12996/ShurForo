@@ -28,10 +28,15 @@ export class ZonaforoComponent implements OnInit {
 
   constructor( public _fc: FirebaseForoService, private router: Router, private modalService: NgbModal ) {
     
-    if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
-      this.admin = JSON.parse(sessionStorage.getItem('usuario'))['admin'];
+    if (JSON.parse(localStorage.getItem('theItem')) != null){
+      this._fc.getUsuarioId(parseInt(localStorage.getItem('theItem'))).subscribe(data => {
+        data.forEach(e => {
+          if (e['admin']){
+            this.admin = true;
+          }
+        });
+      });
     }
-
   }
 
   ngOnInit() {

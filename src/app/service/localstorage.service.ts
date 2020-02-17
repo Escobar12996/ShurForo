@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +10,16 @@ export class LocalstorageService {
 
   constructor() { }
 
-  set usuario(value: User) {
+  set theItem(value) {
     this.itemValue.next(value); // this will make sure to tell every subscriber about the change.
-    sessionStorage.setItem('usuario', JSON.stringify(value.toObject()));
+    localStorage.setItem('theItem', value);
   }
  
-  limpiar(){
-    sessionStorage.setItem('usuario', null);
+  get theItem() {
+    return localStorage.getItem('theItem');
   }
 
-  get usuario() {
-    const usuario: User = JSON.parse(sessionStorage.getItem('usuario'));
-    return usuario;
+  limpiar() {
+    localStorage.setItem('theItem', null);
   }
-
 }

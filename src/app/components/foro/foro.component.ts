@@ -40,8 +40,14 @@ export class ForoComponent implements OnInit {
 
 
   ngOnInit() {
-    if (JSON.parse(sessionStorage.getItem('usuario')) != null && JSON.parse(sessionStorage.getItem('usuario'))['admin'] === true){
-      this.admin = true;
+    if (JSON.parse(localStorage.getItem('theItem')) != null){
+      this._fc.getUsuarioId(parseInt(localStorage.getItem('theItem'))).subscribe(data => {
+        data.forEach(e => {
+          if (e['admin']){
+            this.admin = true;
+          }
+        });
+      });
     }
   }
 

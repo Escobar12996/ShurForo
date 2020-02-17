@@ -37,9 +37,16 @@ export class TemasComponent implements OnInit {
   constructor( public fc: FirebaseForoService, private router: Router, private ruta: ActivatedRoute, private modalService: NgbModal ) {
 
     // cambia la bandera para mostrar el wisiwi ese o el login
-    if(JSON.parse(sessionStorage.getItem('usuario')) !== null) {
-      this.idu = JSON.parse(sessionStorage.getItem('usuario'))['id'];
-      this.admin = JSON.parse(sessionStorage.getItem('usuario'))['admin'];
+    if (JSON.parse(localStorage.getItem('theItem')) != null){
+      this.idu = parseInt(localStorage.getItem('theItem'));
+      
+      this.fc.getUsuarioId(parseInt(localStorage.getItem('theItem'))).subscribe(data => {
+        data.forEach(e => {
+          if (e['admin']){
+            this.admin = true;
+          }
+        });
+      });
     }
   }
 
@@ -69,15 +76,15 @@ export class TemasComponent implements OnInit {
       }
     });
 
-    if (JSON.parse(sessionStorage.getItem('usuario')) != undefined ){
+    if (JSON.parse(localStorage.getItem('theItem')) != undefined ){
       this.tema = new Tema(this.ultimoidtema + 1,
-        JSON.parse(sessionStorage.getItem('usuario'))['id'],
+        parseInt(localStorage.getItem('theItem')),
         '',
         this.seccion,
         this.grupo,
         new Date().getTime());
 
-      this.mensaje = new Mensaje(this.ultimoidtema, '', JSON.parse(sessionStorage.getItem('usuario'))['id'], this.grupo, this.seccion, 0);
+      this.mensaje = new Mensaje(this.ultimoidtema, '', parseInt(localStorage.getItem('theItem')), this.grupo, this.seccion, 0);
       this.temaC = true;
     }
   }
