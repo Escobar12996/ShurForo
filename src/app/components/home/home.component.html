@@ -1,4 +1,4 @@
-<div class="container mt-5 fadeIn animated fast">
+<div class="container mt-5 fadeIn animated fast mb-5 pb-5">
 
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -7,29 +7,60 @@
         </div>
     </div>
 
-    <div class="jumbotron">
-        <h1 class="display-4">Noticia 1</h1>
-        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas nulla, similique cupiditate ab officia voluptatibus. Corporis, delectus? Ex reprehenderit repellat quo reiciendis alias, maxime, dolorem saepe sequi soluta odio porro.</p>
+    <div class="jumbotron" *ngFor="let noticia of noticias">
+        <h1 class="display-4">{{noticia["noticia"]}}</h1>
+        <div class="lead" [innerHTML]="noticia['cuerpo']">{{noticia["cuerpo"]}}</div>
         <hr class="my-4">
-        <p>Admin.</p>
+        <button class="btn btn-outline-danger mt-3" *ngIf="admin" (click)='thisborrar(noticia["id"])'>Borrar</button>
     </div>
-
-    <div class="jumbotron">
-        <h1 class="display-4">Noticia 1</h1>
-        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas nulla, similique cupiditate ab officia voluptatibus. Corporis, delectus? Ex reprehenderit repellat quo reiciendis alias, maxime, dolorem saepe sequi soluta odio porro.</p>
-        <hr class="my-4">
-        <p>Admin.</p>
-    </div>
-    <div class="jumbotron">
-        <h1 class="display-4">Noticia 1</h1>
-        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas nulla, similique cupiditate ab officia voluptatibus. Corporis, delectus? Ex reprehenderit repellat quo reiciendis alias, maxime, dolorem saepe sequi soluta odio porro.</p>
-        <hr class="my-4">
-        <p>Admin.</p>
-    </div>
-    <div class="jumbotron">
-        <h1 class="display-4">Noticia 1</h1>
-        <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas nulla, similique cupiditate ab officia voluptatibus. Corporis, delectus? Ex reprehenderit repellat quo reiciendis alias, maxime, dolorem saepe sequi soluta odio porro.</p>
-        <hr class="my-4">
-        <p>Admin.</p>
-    </div>
+    <button class="btn btn-outline-success mt-3" *ngIf="admin" (click)='crear()'>Crear</button>
 </div>
+
+<ng-template #mymodalbor let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Deseas Borrar</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <button type="button" (click)="borrardt()" class="btn btn-outline-danger mt-3">
+                        Borrar
+                    </button>
+                    <button type="button" (click)="noborrar()" class="btn btn-outline-success mt-3">
+                        No Borrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #mymodalnoticia let-modal>
+    <div class="modal-content">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-12 text-center bg-danger p-3">
+                    <h2 class="text-white">Nueva Noticia</h2>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <form (ngSubmit)="enviarnoticia(formulario)" #formulario="ngForm">
+                        <div class="m-3 p-1" *ngIf="!formulario.submitted"> </div>
+                        <span class="text-danger fadeIn animated" *ngIf="formulario.submitted && formulario.controls['nombre'].errors">Contenido no valido</span>
+                        <input type="text" required [(ngModel)]="nombre" name="nombre" class="form-control  mb-3">
+                        <ckeditor class="ck-editor__editable  mt-2" [(ngModel)]="cuerpo" name="mensaje" required [editor]="editor"></ckeditor>
+
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <button type="submit" class="btn btn-outline-danger mt-3">
+                                Nueva Noticia
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

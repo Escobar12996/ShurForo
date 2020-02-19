@@ -44,8 +44,11 @@
                         <input type="text" required [(ngModel)]="grupo.nombre" name="nombre" class="form-control">
                         <div class="row">
                             <div class="col-12 text-right">
-                                <button type="submit" class="btn btn-outline-danger mt-3">
-                                Nueva Seccion
+                                <button type="submit" *ngIf="!editar" class="btn btn-outline-danger mt-3">
+                                Nuevo Grupo
+                            </button>
+                                <button type="submit" *ngIf="editar" class="btn btn-outline-danger mt-3">
+                                Editar Grupo
                             </button>
                             </div>
                         </div>

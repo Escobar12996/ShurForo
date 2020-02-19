@@ -7,7 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { HttpClientModule } from '@angular/common/http';
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
 import  { APP_ROUTING } from './app.routes';
@@ -58,6 +58,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     NgbModule,
+    HttpClientModule,
   ],
   providers: [
     FirebaseForoService
