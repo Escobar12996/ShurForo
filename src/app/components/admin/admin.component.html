@@ -1,24 +1,26 @@
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Usuario</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Bloqueado</th>
-                <th scope="col">Administrador</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let usu of usuarios">
-                <th scope="row">{{usu.getUsuario()}}</th>
-                <td>{{usu.getNombreappe()}}</td>
-                <td *ngIf="usu.isBloqueado() === true"><button (click)="chblock(usu.getId())" class="btn btn-block bg-warning">Desbloquear</button></td>
-                <td *ngIf="!(usu.isBloqueado() === true)"><button (click)="chblock(usu.getId())" class="btn btn-block bg-danger">Bloquear</button></td>
-                <td *ngIf="usu.isAdmin() === true"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-success">Quitar Admin</button></td>
-                <td *ngIf="!(usu.isAdmin() === true)"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-warning">Dar Admin</button></td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container mt-5">
+    <div class="jumbotron mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Bloqueado</th>
+                    <th scope="col">Administrador</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let usu of usuarios">
+                    <th scope="row">{{usu.getUsuario()}}</th>
+                    <td>{{usu.getNombreappe()}}</td>
+                    <td *ngIf="usu.isBloqueado() === true"><button (click)="chblock(usu.getId())" class="btn btn-block bg-warning">Desbloquear</button></td>
+                    <td *ngIf="!(usu.isBloqueado() === true)"><button (click)="chblock(usu.getId())" class="btn btn-block bg-danger">Bloquear</button></td>
+                    <td *ngIf="usu.isAdmin() === true"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-success">Quitar Admin</button></td>
+                    <td *ngIf="!(usu.isAdmin() === true)"><button (click)="chadmin(usu.getId())" class="btn btn-block bg-warning">Dar Admin</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <ng-template #mymodalbor let-modal>

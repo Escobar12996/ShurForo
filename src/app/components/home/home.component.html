@@ -13,7 +13,12 @@
         <hr class="my-4">
         <button class="btn btn-outline-danger mt-3" *ngIf="admin" (click)='thisborrar(noticia["id"])'>Borrar</button>
     </div>
-    <button class="btn btn-outline-success mt-3" *ngIf="admin" (click)='crear()'>Crear</button>
+    <div class="row text-right align-content-end mt-3 bg-white p-2" *ngIf="admin">
+        <div class="col-12">
+            <button class="btn btn-outline-success p-2" *ngIf="admin" (click)='crear()'>Crear</button>
+        </div>
+    </div>
+
 </div>
 
 <ng-template #mymodalbor let-modal>
@@ -51,7 +56,7 @@
                         <input type="text" required [(ngModel)]="nombre" name="nombre" class="form-control  mb-3">
                         <ckeditor class="ck-editor__editable  mt-2" [(ngModel)]="cuerpo" name="mensaje" required [editor]="editor"></ckeditor>
 
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-12 text-right">
                                 <button type="submit" class="btn btn-outline-danger mt-3">
                                 Nueva Noticia
