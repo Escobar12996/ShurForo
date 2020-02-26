@@ -31,6 +31,8 @@ export class NavbarComponent implements OnInit {
           this.nombre = this.usuario.getUsuario();
           if (e['admin']) {
             this.admin = true;
+          } else {
+            this.admin = false;
           }
 
           if (e['bloqueado']){

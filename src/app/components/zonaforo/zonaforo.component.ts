@@ -33,6 +33,8 @@ export class ZonaforoComponent implements OnInit {
         data.forEach(e => {
           if (e['admin']){
             this.admin = true;
+          }else {
+            this.admin = false;
           }
         });
       });

@@ -51,6 +51,8 @@ export class HiloComponent implements OnInit {
         data.forEach(e => {
           if (e['admin']){
             this.admin = true;
+          } else {
+            this.admin = false;
           }
         });
       });

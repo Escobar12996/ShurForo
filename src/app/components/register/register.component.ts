@@ -37,6 +37,10 @@ export class RegisterComponent implements OnInit {
     if (!form.invalid && this.validanombre && this.validaemail && this.repetida === this.usuario.getContrasena() ){
       this.validado = true;
       this.repebool = false;
+
+      this._fc.getUserlastid().subscribe(data=>{
+          this.usuario.setId(data.length);
+      });
     } else if (this.repetida !== this.usuario.getContrasena()) {
       this.repebool = true;
     } else {
@@ -47,24 +51,13 @@ export class RegisterComponent implements OnInit {
   segundoEnvio( form: NgForm ){
 
     if (!form.invalid){
-
-      this._fc.getUserlastid().subscribe(data=>{
-        if (this.unavuelta === true){
-          this.usuario.setId(data.length);
-
-          console.log(this.usuario.getId());
           this._fc.saveUser(this.usuario);
-  
           this.globalService.theItem = '' + this.usuario.getId();
           this.router.navigate(['/home']);
-          
-          this.unavuelta = false;
-          return false;
+          return true;
         }
-       
-      });
     }
-  }
+
 
   onCheckChange(pass: string) {
     this.usuario.changeAficiones(pass);

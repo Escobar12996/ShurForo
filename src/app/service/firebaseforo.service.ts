@@ -161,7 +161,7 @@ export class FirebaseForoService {
   }
 
   getUserlastid(){
-    this.items = this.fb.collection<any>('usuarios', ref => ref.orderBy('id'));
+    this.items = this.fb.collection<any>('usuarios', ref => ref.orderBy('id','asc'));
     return this.items.valueChanges();
   }
 

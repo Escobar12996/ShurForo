@@ -2,9 +2,8 @@
 
 body {
     background: #DBE1E7;
-    background-image: url('/assets/imagenes/fondo.png');
+    background: url('/assets/imagenes/fondo.png') no-repeat center center fixed;
     background-size: cover;
-    background-repeat: no-repeat;
 }
 
 .tamano {
